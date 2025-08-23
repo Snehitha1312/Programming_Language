@@ -1,4 +1,4 @@
-# Status Report – Programming Language Group (Module 1)
+# Status Report – Programming Language(Module 1)
 
 ## Objective of Module 1
 - Designing the grammar rules and syntactic structure of the new language.  
