@@ -61,5 +61,5 @@ A base syntax analyzer has been implemented using **Yacc**.
 
 ## Bilwani
 - Worked on lexer file
-
+- Text editor basic plan
 
