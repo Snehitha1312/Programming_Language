@@ -28,6 +28,8 @@ struct Type{
 struct Decl{
 	char key[1000];
 	char type[1000];
+	char lt[100];
+	char op[100];
 	int size;
 	int re;
 	struct Decl* next;
@@ -39,6 +41,7 @@ struct Node{
 };
 struct Expr{
 	char str[1000];
+	char type[100];
 	int lv;
 };
 struct BoolNode{
@@ -207,6 +210,49 @@ void print_all_envs() {
         print_table(envs[i]->table);
     }
 }
+
+void checkType(struct Expr* op1,struct Expr* op2,char* opr1,char*opr2,char* type){
+	if (strcmp(op1->type,op2->type)==0){
+		strcpy(type,op1->type);
+		return;
+	}
+	if (strcmp(op1->type,"int")==0 && strcmp(op2->type,"float")==0){
+		char* t = genvar();
+		strcpy(opr1,t);
+		sprintf(imcode[code],"%d %s = (float) %s\n",code,opr1,op1->str);
+		code++;
+		strcpy(type,"float");
+		return;
+	}
+	if (strcmp(op1->type,"float")==0 && strcmp(op2->type,"int")==0){
+		char* t = genvar();
+		strcpy(opr2,t);
+		sprintf(imcode[code],"%d %s = (float) %s\n",code,opr2,op2->str);
+		code++;
+		strcpy(type,"float");
+		return;
+	}
+}
+void checkTypeAssign(struct Expr* op1,struct Expr* op2,char*opr ){
+	if (strcmp(op1->type,op2->type)==0){
+		return;
+	}
+	if (strcmp(op1->type,"int")==0 && strcmp(op2->type,"float")==0){
+		char* t = genvar();
+		strcpy(opr,t);
+		sprintf(imcode[code],"%d %s = (int) %s\n",code,opr,op2->str);
+		code++;
+		return;
+	}
+	if (strcmp(op1->type,"float")==0 && strcmp(op2->type,"int")==0){
+		char* t = genvar();
+		strcpy(opr,t);
+		sprintf(imcode[code],"%d %s = (float) %s\n",code,opr,op2->str);
+		code++;
+		return;
+	}
+}
+
 %}
 
 %union{
@@ -230,8 +276,8 @@ void print_all_envs() {
 %nonassoc '(' ')'
 %nonassoc UMINUS ELSE IDEN 
 %nonassoc ';'
-%token <str> IDEN NUM PASN MASN DASN SASN INC DEC LT GT LE GE NE OR AND EQ IF ELSE TR FL WHILE INT FLOAT CHAR
-%token EOF
+%token <str> IDEN NUM PASN MASN DASN SASN INC DEC LT GT LE GE NE OR AND EQ IF ELSE TR FL WHILE INT FLOAT CHAR CHARR
+%token MEOF
 %type <str> ASSGN UN OPR 
 %type <expr>  EXPR TERM
 %type <b> BOOLEXPR STMNTS A ASNEXPR NN
@@ -240,7 +286,7 @@ void print_all_envs() {
 %type <decl> DECLLIST
 %%
 
-S: 	{top = create_env(top,0);} STMNTS M EOF {
+S: 	{top = create_env(top,0);} STMNTS M MEOF{
 	if (e){
 			printf("%s\nRejected \n%s \nCould not generate Three Address Code / Storage Layout\n",buffer,err);
 			e=0;err[0]="\0";buffer[0]='\0';} 
@@ -253,14 +299,18 @@ S: 	{top = create_env(top,0);} STMNTS M EOF {
 			print_all_envs(top);
 			
 		}YYACCEPT;} 
-	| EOF{YYACCEPT;}
-	| error EOF {e=1;strcpy(err,"Invalid Statements");
+	| MEOF{YYACCEPT;}
+	| error MEOF{e=1;strcpy(err,"Invalid Statements");
 		printf("%s \nRejected -> %s \nCould not generate Three Address Code / Storage Layout\n",buffer,err);
 		YYACCEPT; // stop the parsing
 		};
 	
 
 A: ASNEXPR ';' {if (!e){$$ = $1;}}
+	| ASNEXPR error MEOF{strcat(err,"; missing\n");yyerrok;e=1;
+							printf("%s\nRejected -> %s -> Could not generate Three Address Code / Storage Layout\n",buffer,err);
+							YYACCEPT; // stop the parsing
+							}
 	| IF '(' BOOLEXPR ')' M  A {if (!e){backpatch($3->T,$5);
 										$$ = createBoolNode();
 										$$->N = merge($3->F,$6->N);
@@ -271,11 +321,11 @@ A: ASNEXPR ';' {if (!e){$$ = $1;}}
 		$$ = createBoolNode();
 		$$->N = merge(merge($6->N,$8->N),$10);
 	}}
-
-	| IF error EOF {if (!e){strcpy(err,"missing (");yyerrok;e=1;}
-					printf("%s \nRejected -> %s -> Could not generate Three Address Code / Storage Layout\n",buffer,err);
-					YYACCEPT; // stop the parsing or else loop
-					}
+	| EXPR error MEOF{{strcat(err,"; missing");yyerrok;e=1;}
+							printf("%s\nRejected -> %s -> Could not generate Three Address Code / Storage Layout\n",buffer,err);
+							YYACCEPT; // stop the parsing
+							}
+	| IF BOOLEXPR ')' M A ELSE NN M A{{strcat(err,"missing (\n");e=1;}}
 
 	| WHILE M '(' BOOLEXPR ')' M A{if (!e){
 		backpatch($7->N,$2);
@@ -285,6 +335,7 @@ A: ASNEXPR ';' {if (!e){$$ = $1;}}
 		sprintf(imcode[code],"%d goto %d\n",code,$2);
 		code++;
 		}}
+	| WHILE M  BOOLEXPR ')' M A{{strcat(err,"missing (\n");e=1;}}
 	| '{' {top = create_env(top,offset);offset=0;} STMNTS '}' {if (!e) {
 						$$ = createBoolNode();
 						$$->N = $3->N;
@@ -293,12 +344,8 @@ A: ASNEXPR ';' {if (!e){$$ = $1;}}
 						else offset = top->prev_offset;
 						}} 
 	| '{' '}' {if (!e){$$=createBoolNode();}}
-	| EXPR ';'{;}
-	| EXPR error EOF {if (!e) 	{strcpy(err,"; missing");yyerrok;e=1;}
-							printf("%s\nRejected -> %s -> Could not generate Three Address Code / Storage Layout\n",buffer,err);
-							YYACCEPT; // stop the parsing
-							};
-	| DECLSTATEMENT {;};
+	| EXPR ';'{if (!e) {$$=createBoolNode();}}
+	| DECLSTATEMENT {if (!e){$$=createBoolNode();}};
 
 DECLSTATEMENT: TYPE DECLLIST ';' {
 	struct Decl* temp = $2;
@@ -326,10 +373,20 @@ DECLSTATEMENT: TYPE DECLLIST ';' {
 			strcpy(s->type,temp->type);
 			sprintf(s->type+strlen(s->type),"%s %d",$1,temp->size*$1->size);
 		}
+		if (strcmp(temp->lt,"u")==0){}
+		else if (strcmp($1,temp->lt)==0){
+			sprintf(imcode[code],"%d %s = %s\n",code,temp->key,temp->op);code++;
+		}
+		else{
+			sprintf(imcode[code],"%d %s = (%s) %s\n",code,temp->key,$1,temp->op);code++;
+		}
 
 		temp = temp->next;
-	}
-};
+	}}
+	| TYPE DECLLIST  error MEOF{{strcat(err,"; missing\n");yyerrok;e=1;}
+							printf("%s\nRejected -> %s -> Could not generate Three Address Code / Storage Layout\n",buffer,err);
+							YYACCEPT; }
+;
 
 DECLLIST: IDEN ',' DECLLIST {if (get(top->table,$1)==NULL){
 								Symbol* s = createSymbol($1);
@@ -341,7 +398,7 @@ DECLLIST: IDEN ',' DECLLIST {if (get(top->table,$1)==NULL){
 								$$ = createDecl($1);
 								strcpy($$->type,"");
 								$$->re =1;
-								}
+								}strcpy($$->lt,"u");
 						}
 	| IDEN INDEX ',' DECLLIST {
 				if (get(top->table,$1)==NULL){
@@ -356,7 +413,7 @@ DECLLIST: IDEN ',' DECLLIST {if (get(top->table,$1)==NULL){
 					$$ = createDecl($1);
 					strcpy($$->type,"");
 					$$->re =1;
-				}
+				}strcpy($$->lt,"u");
 	}
 	| IDEN {if (get(top->table,$1)==NULL){
 						Symbol* s = createSymbol($1);
@@ -367,16 +424,20 @@ DECLLIST: IDEN ',' DECLLIST {if (get(top->table,$1)==NULL){
 						$$ = createDecl($1);
 						strcpy($$->type,"");
 						$$->re = 1;
-						}}
-	| IDEN '=' EXPR {sprintf(imcode[code],"%d %s = %s\n",code,$1,$3);code++;
+						}strcpy($$->lt,"u");}
+	| IDEN '=' EXPR {//sprintf(imcode[code],"%d %s = %s\n",code,$1,$3);code++;
 					if (get(top->table,$1)==NULL){
 						Symbol* s = createSymbol($1);
 						put(top->table,$1,s);
 						$$ = createDecl($1);
+						strcpy($$->lt,$3->type);
+						strcpy($$->op,$3->str);
 						}
 					else{
 						$$ = createDecl($1);
 						strcpy($$->type,"");
+						strcpy($$->lt,$3->type);
+						strcpy($$->op,$3->str);
 						$$->re=1;
 					}}
 	| IDEN INDEX {if (get(top->table,$1)==NULL){
@@ -390,13 +451,13 @@ DECLLIST: IDEN ',' DECLLIST {if (get(top->table,$1)==NULL){
 						$$ = createDecl($1);
 						strcpy($$->type,"");
 						$$->re=1;
-					}};
+					}strcpy($$->lt,"u");};
 
 INDEX: '[' NUM ']' {$$ = createType();$$->size=atoi($2);sprintf($$->str,"array ");
 					if (checkfloat($2)){
 						e=1;sprintf(err+strlen(err),"Array index cannot be float\n");
 					}}
-	| '[' NUM ']' INDEX {$$ = createType();$$->size=$4->size+atoi($2);sprintf($$->str,"array %s",$4->str);
+	| '[' NUM ']' INDEX {$$ = createType();$$->size=$4->size*atoi($2);sprintf($$->str,"array %s",$4->str);
 						if (checkfloat($2)){e=1;sprintf(err+strlen(err),"Array index cannot be float\n");
 					}};
 
@@ -418,25 +479,29 @@ ASSGN: '=' {strcpy($$,"=");}
      | SASN {strcpy($$,$1);} ;
 
 BOOLEXPR:     
-	 BOOLEXPR OR M BOOLEXPR {  backpatch($1->F,$3);
+	 BOOLEXPR OR M BOOLEXPR {  if (!e){backpatch($1->F,$3);
 							 	$$ = createBoolNode();	
 								$$->T = merge($1->T,$4->T);
 								$$->F = $4->F;
-							 }
-    | BOOLEXPR AND M BOOLEXPR {	backpatch($1->T,$3);
+							 }}
+    | BOOLEXPR AND M BOOLEXPR {	if (!e){backpatch($1->T,$3);
 								$$ = createBoolNode();
 								$$->T = $4->T;
 								$$->F = merge($1->F,$4->F);
-								}
+								}}
 	| '!' BOOLEXPR {
+		if (!e){
 		$$ = createBoolNode();
 		$$->T = $2->F;
 		$$->F = $2->T;
+		}
 	}
 	| '(' BOOLEXPR ')' {
+		if (!e){
 		$$ = createBoolNode();
 		$$->T = $2->T;
 		$$->F = $2->F;
+		}
 	}
 	| EXPR LT EXPR  {if(!e) {sprintf(imcode[code],"%d if %s %s %s goto ",code,$1->str,$2,$3->str);
 							$$ = createBoolNode();
@@ -497,7 +562,13 @@ NN: {$$=createBoolNode();
 	code++;
 	};
 
-ASNEXPR: EXPR ASSGN EXPR {if (!e && $1->lv){if (strlen($2)==1){sprintf(imcode[code],"%d %s = %s\n",code,$1,$3);code++;}
+ASNEXPR: EXPR ASSGN EXPR {if (!e && $1->lv){
+							char* ct1 = (char*)malloc(sizeof(char));strcpy(ct1,"");
+							checkTypeAssign($1,$3,ct1);
+							if(strcmp(ct1,"")){
+								strcpy($3->str,ct1);
+							}
+							if (strlen($2)==1){sprintf(imcode[code],"%d %s = %s\n",code,$1,$3);code++;}
 							else{
 								char* t = genvar();
 								sprintf(imcode[code],"%d %s = %s %c %s\n",code,t,$1,$2[0],$3);code++;
@@ -506,17 +577,17 @@ ASNEXPR: EXPR ASSGN EXPR {if (!e && $1->lv){if (strlen($2)==1){sprintf(imcode[co
 							}
 							$$ = createBoolNode();
 							}
-							if (!$1->lv){e=1;strcpy(err,"L value not assignable");}}
+							if (!$1->lv){e=1;strcat(err,"L value not assignable\n");}}
 
-EXPR: EXPR '+' EXPR {if (!e){char* t = genvar();$$ = createExpr();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s + %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
-    | EXPR '-' EXPR {if (!e){char* t = genvar();$$ = createExpr();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s - %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
-    | EXPR '*' EXPR {if (!e){char* t = genvar();$$ = createExpr();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s * %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
-	| EXPR '/' EXPR {if (!e){char* t = genvar();$$ = createExpr();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s / %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
-	| EXPR '%' EXPR {if (!e){char* t = genvar();$$ = createExpr();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s % %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
-	| '(' EXPR ')'  {if (!e){strcpy($$->str,$2->str);}}
+EXPR: EXPR '+' EXPR {if (!e){$$ = createExpr();char* ct1 = (char*)malloc(sizeof(char));strcpy(ct1,"");char* ct2 = (char*)malloc(sizeof(char));strcpy(ct2,"");checkType($1,$3,ct1,ct2,$$->type);if(strcmp(ct1,"")){strcpy($1->str,ct1);}if(strcmp(ct2,"")){strcpy($3->str,ct2);}char* t = genvar();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s + %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
+    | EXPR '-' EXPR {if (!e){$$ = createExpr();char* ct1 = (char*)malloc(sizeof(char));strcpy(ct1,"");char* ct2 = (char*)malloc(sizeof(char));strcpy(ct2,"");checkType($1,$3,ct1,ct2,$$->type);if(strcmp(ct1,"")){strcpy($1->str,ct1);}if(strcmp(ct2,"")){strcpy($3->str,ct2);}char* t = genvar();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s - %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
+    | EXPR '*' EXPR {if (!e){$$ = createExpr();char* ct1 = (char*)malloc(sizeof(char));strcpy(ct1,"");char* ct2 = (char*)malloc(sizeof(char));strcpy(ct2,"");checkType($1,$3,ct1,ct2,$$->type);if(strcmp(ct1,"")){strcpy($1->str,ct1);}if(strcmp(ct2,"")){strcpy($3->str,ct2);}char* t = genvar();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s * %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
+	| EXPR '/' EXPR {if (!e){$$ = createExpr();char* ct1 = (char*)malloc(sizeof(char));strcpy(ct1,"");char* ct2 = (char*)malloc(sizeof(char));strcpy(ct2,"");checkType($1,$3,ct1,ct2,$$->type);if(strcmp(ct1,"")){strcpy($1->str,ct1);}if(strcmp(ct2,"")){strcpy($3->str,ct2);}char* t = genvar();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s / %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
+	| EXPR '%' EXPR {if (!e){if (strcmp($3->type,"float")==0 || strcmp($1->type,"float")==0){e=1;sprintf(err+strlen(err),"invalid operands to binary % (float)\n");}$$ = createExpr();char* ct1 = (char*)malloc(sizeof(char));strcpy(ct1,"");char* ct2 = (char*)malloc(sizeof(char));strcpy(ct2,"");checkType($1,$3,ct1,ct2,$$->type);if(strcmp(ct1,"")){strcpy($1->str,ct1);}if(strcmp(ct2,"")){strcpy($3->str,ct2);}char* t = genvar();strcpy($$->str,t);sprintf(imcode[code],"%d %s = %s %% %s\n",code,t,$1->str,$3->str);code++;$$->lv=0;}}
+	| '(' EXPR ')'  {if (!e){$$ = createExpr();strcpy($$->str,$2->str);}}
     /* | '(' EXPR error {e=1;strcpy(err,"missing R-Paren");yyerrok;} */
 	| EXPR OP ';'{e=1;strcpy(err,"Missing operand");yyerrok;}
-    | TERM {$$ = createExpr();strcpy($$->str,$1);$$->lv=$1->lv;};
+    | TERM {$$ = $1;};
 
 OP: '+' | '-' | '*' | '/' | '%';
 TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
@@ -525,6 +596,8 @@ TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
 							while(temp){
 								if (get(temp->table,$3)){
 									found = 1;
+									Symbol* t = get(temp->table,$3);
+									strcpy($$->type,t->type);
 									break;
 								}
 								temp = temp->prev;
@@ -545,6 +618,8 @@ TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
 							while(temp){
 								if (get(temp->table,$3)){
 									found = 1;
+									Symbol* t = get(temp->table,$3);
+									strcpy($$->type,t->type);
 									break;
 								}
 								temp = temp->prev;
@@ -573,6 +648,8 @@ TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
 							while(temp){
 								if (get(temp->table,$2)){
 									found = 1;
+									Symbol* t = get(temp->table,$2);
+									strcpy($$->type,t->type);
 									break;
 								}
 								temp = temp->prev;
@@ -595,6 +672,8 @@ TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
 							while(temp){
 								if (get(temp->table,$2)){
 									found = 1;
+									Symbol* t = get(temp->table,$2);
+									strcpy($$->type,t->type);
 									break;
 								}
 								temp = temp->prev;
@@ -613,6 +692,12 @@ TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
 					strcpy($$->str,t);
 					sprintf(imcode[code],"%d %s = %s\n",code,t,$2);code++;
 				}
+				if (checkfloat($2)){
+					strcpy($$->type,"float");
+				}
+				else{
+					strcpy($$->type,"int");
+				}
 				$$->lv = 0;}
     | UN IDEN C {if (!strcmp($1,"-")) {char* t = genvar();$$ = createExpr();strcpy($$->str,t);
 										sprintf(imcode[code],"%d %s = - %s\n",code,t,$2);
@@ -624,6 +709,8 @@ TERM: UN OPR IDEN B  {if (strcmp($1,"-")){
 				while(temp){
 					if (get(temp->table,$2)){
 						found = 1;
+						Symbol* t = get(temp->table,$2);
+						strcpy($$->type,t->type);
 						break;
 					}
 					temp = temp->prev;
