@@ -45,5 +45,21 @@ A base syntax analyzer has been implemented using **Yacc**.
   - **Error handling:** Parser prints **syntax error messages** when unexpected tokens appear.  
 
 ---
+# Contributions
+
+## Snehitha
+- Worked on base code
+- Added tokens for keywords, identifiers, operators, constants, and delimiters
+- Worked on expression handling in parser and grammer rules for declarations,assignments(.y file)
+- Helped in preparing system specification document
+
+## Greeshma
+- Implemented syntax analyzer 
+- Defined grammar rules for conditionals and loops
+- Added error handling for invalid syntax
+- Worked on project documentation (status report)
+
+## Bilwani
+- Worked on lexer file
 
 
