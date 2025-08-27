@@ -276,7 +276,7 @@ void checkTypeAssign(struct Expr* op1,struct Expr* op2,char*opr ){
 %nonassoc '(' ')'
 %nonassoc UMINUS ELSE IDEN 
 %nonassoc ';'
-%token <str> IDEN NUM PASN MASN DASN SASN INC DEC LT GT LE GE NE OR AND EQ IF ELSE TR FL WHILE INT FLOAT CHAR CHARR
+%token <str> IDEN NUM PASN MASN DASN SASN INC DEC LT GT LE GE NE OR AND EQ IF ELSE TR FL WHILE INT FLOAT CHAR CHARR FOR
 %token MEOF
 %type <str> ASSGN UN OPR 
 %type <expr>  EXPR TERM
@@ -335,6 +335,17 @@ A: ASNEXPR ';' {if (!e){$$ = $1;}}
 		sprintf(imcode[code],"%d goto %d\n",code,$2);
 		code++;
 		}}
+	| FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A {
+         if (!e) {
+           backpatch($6->T, $11);
+           backpatch($10->N, $4);
+           $$ = createBoolNode();
+           $$->N = $6->F;
+           backpatch($13->N, $8);
+           sprintf(imcode[code], "%d goto %d\n", code, $4);
+           code++;
+        }
+     }
 	| WHILE M  BOOLEXPR ')' M A{{strcat(err,"missing (\n");e=1;}}
 	| '{' {top = create_env(top,offset);offset=0;} STMNTS '}' {if (!e) {
 						$$ = createBoolNode();

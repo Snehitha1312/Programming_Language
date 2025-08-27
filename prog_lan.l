@@ -39,6 +39,7 @@
         int {append(yytext);strcpy(yylval.str,yytext);return INT;}
         float {append(yytext);strcpy(yylval.str,yytext);return FLOAT;}
         char {append(yytext);strcpy(yylval.str,yytext);return CHAR;}
+        for  { append(yytext); strcpy(yylval.str, yytext); return FOR;}
         ({num}|{num2}) {append(yytext);strcpy(yylval.str,yytext);return NUM;} 
         {iden} {append(yytext);strcpy(yylval.str,yytext);return IDEN;}
         {ws} {append(yytext);}
