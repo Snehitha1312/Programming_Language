@@ -36,6 +36,8 @@
         while {append(yytext);strcpy(yylval.str,yytext);return WHILE;}
         if   {append(yytext);strcpy(yylval.str,yytext);return IF;}
         else {append(yytext);strcpy(yylval.str,yytext);return ELSE;}
+        void   {append(yytext); strcpy(yylval.str,yytext); return VOID;}
+        return {append(yytext); strcpy(yylval.str,yytext); return RETURN;}
         int {append(yytext);strcpy(yylval.str,yytext);return INT;}
         float {append(yytext);strcpy(yylval.str,yytext);return FLOAT;}
         char {append(yytext);strcpy(yylval.str,yytext);return CHAR;}
