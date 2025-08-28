@@ -45,6 +45,158 @@ A base syntax analyzer has been implemented using **Yacc**.
   - **Error handling:** Parser prints **syntax error messages** when unexpected tokens appear.  
 
 ---
+
+
+## Grammar Rules:
+
+-----------------------------------
+ Start Rule
+-----------------------------------
+S              → STMNTS M MEOF
+               | MEOF
+               | error MEOF
+
+
+-----------------------------------
+ Statements
+-----------------------------------
+STMNTS         → STMNTS M A
+               | A M
+
+A              → ASNEXPR ';'
+               | ASNEXPR error MEOF
+               | IF '(' BOOLEXPR ')' M A
+               | IF '(' BOOLEXPR ')' M A ELSE NN M A
+               | IF BOOLEXPR ')' M A ELSE NN M A
+               | WHILE M '(' BOOLEXPR ')' M A
+               | WHILE M BOOLEXPR ')' M A
+               | '{' STMNTS '}'
+               | '{' '}'
+               | EXPR ';'
+               | EXPR error MEOF
+               | DECLSTATEMENT
+               | FUNCDECL
+
+
+-----------------------------------
+ Function Declarations
+-----------------------------------
+FUNCDECL       → TYPE IDEN '(' PARAMLIST ')' ';'
+               | TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
+               | TYPE IDEN '(' ')' ';'
+               | TYPE IDEN '(' ')' '{' STMNTS '}'
+
+PARAMLIST      → PARAM ',' PARAMLIST
+               | PARAM
+
+PARAM          → TYPE IDEN
+               | TYPE IDEN INDEX
+
+
+-----------------------------------
+ Declarations
+-----------------------------------
+DECLSTATEMENT  → TYPE DECLLIST ';'
+               | TYPE DECLLIST error MEOF
+
+DECLLIST       → IDEN ',' DECLLIST
+               | IDEN INDEX ',' DECLLIST
+               | IDEN
+               | IDEN '=' EXPR
+               | IDEN INDEX
+
+INDEX          → '[' NUM ']'
+               | '[' NUM ']' INDEX
+
+
+-----------------------------------
+ Types
+-----------------------------------
+TYPE           → INT
+               | FLOAT
+               | CHAR
+
+
+-----------------------------------
+ Assignments
+-----------------------------------
+ASNEXPR        → EXPR ASSGN EXPR
+
+ASSGN          → '='
+               | PASN
+               | MASN
+               | DASN
+               | SASN
+
+
+-----------------------------------
+ Boolean Expressions
+-----------------------------------
+BOOLEXPR       → BOOLEXPR OR M BOOLEXPR
+               | BOOLEXPR AND M BOOLEXPR
+               | '!' BOOLEXPR
+               | '(' BOOLEXPR ')'
+               | EXPR LT EXPR
+               | EXPR GT EXPR
+               | EXPR EQ EXPR
+               | EXPR NE EXPR
+               | EXPR LE EXPR
+               | EXPR GE EXPR
+               | TR
+               | FL
+
+
+-----------------------------------
+ Expressions
+-----------------------------------
+EXPR           → EXPR '+' EXPR
+               | EXPR '-' EXPR
+               | EXPR '*' EXPR
+               | EXPR '/' EXPR
+               | EXPR '%' EXPR
+               | EXPR OP ';'
+               | TERM
+
+OP             → '+'
+               | '-'
+               | '*'
+               | '/'
+               | '%'
+
+TERM           → UN OPR IDEN B
+               | UN IDEN OPR B
+               | UN NUM C
+               | UN IDEN C
+               | UN INC NUM
+               | UN DEC NUM
+               | UN NUM INC
+               | UN NUM DEC
+
+OPR            → INC
+               | DEC
+
+
+-----------------------------------
+ Helpers
+-----------------------------------
+B              → OPR
+               | IDEN
+               | NUM
+               | ε
+
+C              → IDEN
+               | NUM
+               | ε
+
+UN             → '-'
+
+
+-----------------------------------
+ Misc
+-----------------------------------
+M              → ε
+NN             → ε
+
 # Contributions
 
 ## Snehitha
