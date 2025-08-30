@@ -5,6 +5,7 @@
 %left '*' '/' '%'
 %right '=' PASN MASN DASN SASN
 %right UMINUS INC DEC
+%token RETURN
 
 
 S: STMNTS M MEOF
@@ -25,7 +26,7 @@ A: ASNEXPR ';'
  | EXPR error MEOF
  | WHILE M '(' BOOLEXPR ')' M A
  | WHILE M BOOLEXPR ')' M A           /* error handling */
- | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A
+ | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A 
  | '{' STMNTS '}'
  | '{' '}'
  | EXPR ';'
@@ -37,6 +38,7 @@ A: ASNEXPR ';'
  | CONTINUE ';'           
  | ';'                   
 ;
+
 
 /* Functions  */
 FUNCDECL: TYPE IDEN '(' PARAMLIST ')' ';'
