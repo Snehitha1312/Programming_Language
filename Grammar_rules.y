@@ -1,112 +1,116 @@
-S:  STMNTS M MEOF
-	| MEOF
-	| error MEOF
-	
-
-A: ASNEXPR ';' 
-	| ASNEXPR error MEOF
-	| IF '(' BOOLEXPR ')' M  A 
-	| IF '(' BOOLEXPR ')' M A ELSE NN M A 
-	| EXPR error MEOF
-	| IF BOOLEXPR ')' M A ELSE NN M A
-
-	| WHILE M '(' BOOLEXPR ')' M A
-	| WHILE M  BOOLEXPR ')' M A
-	| '{'  STMNTS '}' 
-	| '{' '}' 
-	| EXPR ';'
-	| DECLSTATEMENT 
-	| FUNCDECL
+S: STMNTS M MEOF
+ | MEOF
+ | error MEOF
+;
 
 
+A: ASNEXPR ';'
+ | ASNEXPR error MEOF
+ | IF '(' BOOLEXPR ')' M A
+ | IF '(' BOOLEXPR ')' M A ELSE NN M A
+ | EXPR error MEOF
+ | WHILE M '(' BOOLEXPR ')' M A
+ | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A
+ | '{' STMNTS '}'
+ | '{' '}'
+ | EXPR ';'
+ | DECLSTATEMENT
+ | FUNCDECL
+ | RETURN EXPR ';'           
+;
+
+/*Functions */
 FUNCDECL: TYPE IDEN '(' PARAMLIST ')' ';'
-| TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
-| TYPE IDEN '(' ')' ';'
-| TYPE IDEN '(' ')' '{' STMNTS '}'
+ | TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
+ | TYPE IDEN '(' ')' ';'
+ | TYPE IDEN '(' ')' '{' STMNTS '}'
 ;
 
 PARAMLIST: PARAM ',' PARAMLIST
-| PARAM
+ | PARAM
 ;
 
-PARAM: TYPE IDEN 
-| TYPE IDEN INDEX
+PARAM: TYPE IDEN
+ | TYPE IDEN INDEX
 ;
 
-DECLSTATEMENT: TYPE DECLLIST ';' 
-	| TYPE DECLLIST  error MEOF 
+/*Declarations*/
+DECLSTATEMENT: TYPE DECLLIST ';'
+ | TYPE DECLLIST error MEOF
 ;
 
-DECLLIST: IDEN ',' DECLLIST 
-	| IDEN INDEX ',' DECLLIST 
-	| IDEN 
-	| IDEN '=' EXPR 
-	| IDEN INDEX 
+DECLLIST: IDEN ',' DECLLIST
+ | IDEN INDEX ',' DECLLIST
+ | IDEN
+ | IDEN '=' EXPR
+ | IDEN INDEX
+;
 
-INDEX: '[' NUM ']' 
-	| '[' NUM ']' INDEX 
+INDEX: '[' NUM ']'
+ | '[' NUM ']' INDEX
+;
 
-TYPE: INT 
-	| FLOAT  
-	| CHAR 
-
-STMNTS: STMNTS M A  
-	| A M
-
-
-ASSGN: '=' 
-	 | PASN 
-	 | MASN 
-     | DASN 
-     | SASN  ;
-
-BOOLEXPR:     
-	 BOOLEXPR OR M BOOLEXPR 
-    | BOOLEXPR AND M BOOLEXPR 
-	| '!' BOOLEXPR 
-	| '(' BOOLEXPR ')' 
-	| EXPR LT EXPR  
-    | EXPR GT EXPR  
-	| EXPR EQ EXPR  
-    | EXPR NE EXPR 
-	| EXPR LE EXPR  
-    | EXPR GE EXPR  
-	| TR 
-	
-	| FL 
-
-M: 
-NN: 
-
-ASNEXPR: EXPR ASSGN EXPR 
-
-EXPR: EXPR '+' EXPR 
-    | EXPR '-' EXPR 
-    | EXPR '*' EXPR 
-	| EXPR '/' EXPR 
-	| EXPR '%' EXPR 
-	| EXPR OP ';'
-    | TERM 
-
-OP: '+' | '-' | '*' | '/' | '%';
-TERM: UN OPR IDEN B  
-    | UN IDEN OPR B 
-    | UN NUM C 
-    | UN IDEN C 
-    | UN INC NUM 
-    | UN DEC NUM 
-    | UN NUM INC 
-    | UN NUM DEC;
-
-OPR: INC | DEC;
-
-B : OPR 
-  | IDEN 
-  | NUM 
-  |;
-C : IDEN 
-  | NUM 
-  |;
-UN : '-'  ;
+TYPE: INT
+ | FLOAT
+ | CHAR
+;
 
 
+STMNTS: STMNTS M A
+ | A M
+;
+
+
+ASSGN: '=' | PASN | MASN | DASN | SASN ;
+
+ASNEXPR: EXPR ASSGN EXPR ;
+
+
+BOOLEXPR:
+  BOOLEXPR OR M BOOLEXPR
+ | BOOLEXPR AND M BOOLEXPR
+ | '!' BOOLEXPR
+ | '(' BOOLEXPR ')'
+ | EXPR LT EXPR
+ | EXPR GT EXPR
+ | EXPR EQ EXPR
+ | EXPR NE EXPR
+ | EXPR LE EXPR
+ | EXPR GE EXPR
+ | TR
+ | FL
+;
+
+
+EXPR: EXPR '+' EXPR
+ | EXPR '-' EXPR
+ | EXPR '*' EXPR
+ | EXPR '/' EXPR
+ | EXPR '%' EXPR
+ | FUNC_CALL                  
+ | TERM
+;
+
+/* Function Calls */
+FUNC_CALL: IDEN '(' ARGLIST ')'
+ | IDEN '(' ')'
+;
+
+ARGLIST: EXPR ',' ARGLIST
+ | EXPR
+;
+
+
+TERM: IDEN
+ | NUM
+ | '(' EXPR ')'
+ | '-' TERM
+ | IDEN INC
+ | IDEN DEC
+ | INC IDEN
+ | DEC IDEN
+;
+
+
+M:
+NN:
