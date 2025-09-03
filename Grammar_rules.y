@@ -5,14 +5,17 @@
 %left '*' '/' '%'
 %right '=' PASN MASN DASN SASN
 %right UMINUS INC DEC
-%token RETURN
+%right '?' ':'                /* ternary operator*/
+%token RETURN BREAK CONTINUE
+%token DO PRINT READ
+%token STRING STR             /* STR is literal, STRING token is for type"
+%token TR FL                  /* boolean literals*/
 
 
 S: STMNTS M MEOF
  | MEOF
  | error MEOF
 ;
-
 
 STMNTS: STMNTS M A
  | A M
@@ -22,10 +25,11 @@ A: ASNEXPR ';'
  | ASNEXPR error MEOF
  | IF '(' BOOLEXPR ')' M A
  | IF '(' BOOLEXPR ')' M A ELSE NN M A
- | IF BOOLEXPR ')' M A ELSE NN M A    /* error handling */
+ | IF BOOLEXPR ')' M A ELSE NN M A      /* error handling */
  | EXPR error MEOF
  | WHILE M '(' BOOLEXPR ')' M A
- | WHILE M BOOLEXPR ')' M A           /* error handling */
+ | WHILE M BOOLEXPR ')' M A             /*error handling */
+ | DO M A WHILE M '(' BOOLEXPR ')' ';'  
  | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A 
  | '{' STMNTS '}'
  | '{' '}'
@@ -36,11 +40,14 @@ A: ASNEXPR ';'
  | RETURN ';'             
  | BREAK ';'            
  | CONTINUE ';'           
+ | PRINT '(' PRINTARGS ')' ';'
+ | READ '(' LVALIST ')' ';'
+ | PRINT '(' error ')' ';'        /*error handling */
+ | READ  '(' error ')' ';'        /*error handling*/
  | ';'                   
 ;
 
 
-/* Functions  */
 FUNCDECL: TYPE IDEN '(' PARAMLIST ')' ';'
  | TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
 ;
@@ -54,7 +61,6 @@ PARAM: TYPE IDEN
  | TYPE IDEN INDEX
 ;
 
-
 DECLSTATEMENT: TYPE DECLLIST ';'
  | TYPE DECLLIST error MEOF
 ;
@@ -66,29 +72,33 @@ DECLLIST: DECL ',' DECLLIST
 DECL: IDEN
  | IDEN '=' EXPR
  | IDEN INDEX
- | IDEN INDEX '=' '{' INITLIST '}'   /* array initialization */
+ | IDEN INDEX '=' '{' INITLIST '}'   /*initializing array*/
 ;
 
 INITLIST: INITLIST ',' EXPR
  | EXPR
 ;
 
-INDEX: '[' NUM ']'
- | '[' NUM ']' INDEX
-;
 
+INDEX: '[' EXPR ']'
+ | '[' EXPR ']' INDEX
+;
 
 TYPE: INT
  | FLOAT
  | CHAR
  | VOID
+ | STRING
 ;
-
 
 ASSGN: '=' | PASN | MASN | DASN | SASN ;
 
-ASNEXPR: EXPR ASSGN EXPR ;
 
+LVAL: IDEN
+    | IDEN INDEX
+;
+
+ASNEXPR: LVAL ASSGN EXPR ;
 
 BOOLEXPR:
   BOOLEXPR OR M BOOLEXPR
@@ -111,12 +121,13 @@ EXPR: EXPR '+' EXPR
  | EXPR '*' EXPR
  | EXPR '/' EXPR
  | EXPR '%' EXPR
+ | EXPR '?' EXPR ':' EXPR        /*ternary-condition*/
  | FUNC_CALL                  
  | TERM
  | '-' EXPR %prec UMINUS
 ;
 
-/* Function calls  */
+
 FUNC_CALL: IDEN '(' ARGLIST ')'
 ;
 
@@ -125,16 +136,33 @@ ARGLIST: EXPR ',' ARGLIST
  | /* empty */
 ;
 
+/* I/O operations*/
+PRINTARGS: EXPR
+         | EXPR ',' PRINTARGS
+;
+
+LVALIST: LVAL
+       | LVAL ',' LVALIST
+;
+
 
 TERM: IDEN
+ | IDEN INDEX
  | NUM
+ | STR
+ | TR
+ | FL
  | '(' EXPR ')'
  | IDEN INC
  | IDEN DEC
+ | IDEN INDEX INC
+ | IDEN INDEX DEC
  | INC IDEN
  | DEC IDEN
+ | INC IDEN INDEX
+ | DEC IDEN INDEX
 ;
 
 /* Markers */
 M:
-NN:
+NN: /*Marker to handle else part*/
