@@ -1,63 +1,87 @@
+/* Precedence */
+%left OR AND
+%left LT GT LE GE EQ NE
+%left '+' '-'
+%left '*' '/' '%'
+%right '=' PASN MASN DASN SASN
+%right UMINUS INC DEC
+%token RETURN
+
+
 S: STMNTS M MEOF
  | MEOF
  | error MEOF
 ;
 
 
+STMNTS: STMNTS M A
+ | A M
+;
+
 A: ASNEXPR ';'
  | ASNEXPR error MEOF
  | IF '(' BOOLEXPR ')' M A
  | IF '(' BOOLEXPR ')' M A ELSE NN M A
+ | IF BOOLEXPR ')' M A ELSE NN M A    /* error handling */
  | EXPR error MEOF
  | WHILE M '(' BOOLEXPR ')' M A
- | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A
+ | WHILE M BOOLEXPR ')' M A           /* error handling */
+ | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A 
  | '{' STMNTS '}'
  | '{' '}'
  | EXPR ';'
  | DECLSTATEMENT
  | FUNCDECL
- | RETURN EXPR ';'           
+ | RETURN EXPR ';'
+ | RETURN ';'             
+ | BREAK ';'            
+ | CONTINUE ';'           
+ | ';'                   
 ;
 
-/*Functions */
+
+/* Functions  */
 FUNCDECL: TYPE IDEN '(' PARAMLIST ')' ';'
  | TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
- | TYPE IDEN '(' ')' ';'
- | TYPE IDEN '(' ')' '{' STMNTS '}'
 ;
 
 PARAMLIST: PARAM ',' PARAMLIST
  | PARAM
+ | /* empty */
 ;
 
 PARAM: TYPE IDEN
  | TYPE IDEN INDEX
 ;
 
-/*Declarations*/
+
 DECLSTATEMENT: TYPE DECLLIST ';'
  | TYPE DECLLIST error MEOF
 ;
 
-DECLLIST: IDEN ',' DECLLIST
- | IDEN INDEX ',' DECLLIST
- | IDEN
+DECLLIST: DECL ',' DECLLIST
+ | DECL
+;
+
+DECL: IDEN
  | IDEN '=' EXPR
  | IDEN INDEX
+ | IDEN INDEX '=' '{' INITLIST '}'   /* array initialization */
+;
+
+INITLIST: INITLIST ',' EXPR
+ | EXPR
 ;
 
 INDEX: '[' NUM ']'
  | '[' NUM ']' INDEX
 ;
 
+
 TYPE: INT
  | FLOAT
  | CHAR
-;
-
-
-STMNTS: STMNTS M A
- | A M
+ | VOID
 ;
 
 
@@ -89,28 +113,28 @@ EXPR: EXPR '+' EXPR
  | EXPR '%' EXPR
  | FUNC_CALL                  
  | TERM
+ | '-' EXPR %prec UMINUS
 ;
 
-/* Function Calls */
+/* Function calls  */
 FUNC_CALL: IDEN '(' ARGLIST ')'
- | IDEN '(' ')'
 ;
 
 ARGLIST: EXPR ',' ARGLIST
  | EXPR
+ | /* empty */
 ;
 
 
 TERM: IDEN
  | NUM
  | '(' EXPR ')'
- | '-' TERM
  | IDEN INC
  | IDEN DEC
  | INC IDEN
  | DEC IDEN
 ;
 
-
+/* Markers */
 M:
 NN:
