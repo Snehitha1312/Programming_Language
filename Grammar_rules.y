@@ -7,7 +7,7 @@
 %right UMINUS INC DEC
 %right '?' ':'                /* ternary operator*/
 %token RETURN BREAK CONTINUE
-%token DO PRINT READ
+%token DO 
 %token STRING STR             /* STR is literal, STRING token is for type"
 %token TR FL                  /* boolean literals*/
 
@@ -40,10 +40,6 @@ A: ASNEXPR ';'
  | RETURN ';'             
  | BREAK ';'            
  | CONTINUE ';'           
- | PRINT '(' PRINTARGS ')' ';'
- | READ '(' LVALIST ')' ';'
- | PRINT '(' error ')' ';'        /*error handling */
- | READ  '(' error ')' ';'        /*error handling*/
  | ';'                   
 ;
 
