@@ -132,10 +132,7 @@ ARGLIST: EXPR ',' ARGLIST
  | /* empty */
 ;
 
-/* I/O operations*/
-PRINTARGS: EXPR
-         | EXPR ',' PRINTARGS
-;
+
 
 LVALIST: LVAL
        | LVAL ',' LVALIST
