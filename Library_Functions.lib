@@ -1,0 +1,77 @@
+
+// Custom IO class simulating cin and cout
+// class IO {
+// public:
+//     // Custom cout
+//     template <typename T>
+//     IO& myCout(const T& value) {
+//         cout << value;   // internally uses std::cout
+//         return *this;
+//     }
+
+//     // Overload for manipulators like endl
+//     IO& myCout(IO& (*manip)(IO&)) {
+//         return manip(*this);
+//     }
+
+//     // Custom cin
+//     template <typename T>
+//     IO& myCin(T& value) {
+//         cin >> value;   // internally uses std::cin
+//         return *this;
+//     }
+
+//     // getline version
+//     IO& myGetline(string& str) {
+//         getline(cin, str);
+//         return *this;
+//     }
+
+//     // Our custom endl
+//     static IO& endl(IO& io) {
+//         cout << "\n";
+//         return io;
+//     }
+// };
+
+class Arithmetic {
+    public:
+     
+        int abs(int x) {
+            return (x < 0) ? -x : x;
+        }
+    
+        double abs(double x) {
+            return (x < 0) ? -x : x;
+        }
+    
+        
+        double sqrt(double x) {
+            if (x < 0) return -1; 
+            if (x == 0 || x == 1) return x;
+    
+            double guess = x;
+            double eps = 1e-9; 
+            while (true) {
+                double newGuess = 0.5 * (guess + x / guess);
+                if (abs(newGuess - guess) < eps) break;
+                guess = newGuess;
+            }
+            return guess;
+        }
+
+        double exp(double x) {
+            double term = 1;   
+            double sum = 1;  
+            int n = 1;
+            double eps = 1e-12;
+    
+            while (abs(term) > eps) {
+                term *= x / n;  
+                sum += term;
+                n++;
+            }
+            return sum;
+        }
+    };
+    
