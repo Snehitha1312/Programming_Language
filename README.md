@@ -341,7 +341,8 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 - Researched basics of **text editor design** and created initial notes on required features for a simple *vi-like editor*.  
 
 ### 2/9/2025
-- Compiled a list of **library functions** (arithmetic operations) to be implemented as part of the standard library for our programming language.  
+- Noted a list of **library functions** (arithmetic operations,algorithemic functions) to be implemented as part of the standard library for our programming language.  
+ **Link to the Doc for Lib Func:** https://docs.google.com/document/d/1ye-qCDcHGzWspuikXosHASviOivtn5AywaK-I83aARM/edit?usp=sharing
 
 ### 3/9/2025  
 - Studied how **library creation works** in C/C++/Java, focusing on compilation and linking steps.  
@@ -355,6 +356,9 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
   - `min(int, int)` / `min(double, double)`  
   - `max(int, int)` / `max(double, double)`  
   - `power(double base, int exp)`  
+
+### 5/9/2025   
+- Started drafting notes for a set of **algorithmic utility functions** to be implemented in the next phase.  
 
 ---
 
