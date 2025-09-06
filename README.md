@@ -197,7 +197,7 @@ UN             → '-'
 M              → ε
 NN             → ε
 
-# Contributions
+# Contributions - Module 1
 
 ## Snehitha
 - Worked on base code
@@ -214,4 +214,55 @@ NN             → ε
 ## Bilwani
 - Worked on lexer file
 - Text editor basic plan
+
+# Contributions- Module 2
+
+
+# Contributions - Module 3
+
+## Greeshma  
+### 1/9/2025  
+- Researched basics of **text editor design** and created initial notes on required features for a simple *vi-like editor*.  
+
+### 2/9/2025
+- Compiled a list of **library functions** (arithmetic operations) to be implemented as part of the standard library for our programming language.  
+- Studied how **library creation works** in C/C++/Java, focusing on compilation and linking steps.  
+
+### 3/9/2025  
+- Studied how **library creation works** in C/C++/Java, focusing on compilation and linking steps.  
+- Implemented grammar rules in `Grammar_rules.y` for:  
+  - **Ternary operator (`?:`)**  
+  - **Do–while loop**  
+
+### 4/9/2025
+- Began coding the **Arithmetic library** (`Library_Functions.lib`).  
+- Implemented the following functions:  
+  - `min(int, int)` / `min(double, double)`  
+  - `max(int, int)` / `max(double, double)`  
+  - `power(double base, int exp)`  
+
+---
+
+## Snehitha 
+### 1/9/2025  
+- Researched **text editor design** in parallel with Greeshma, focusing on editing commands and file handling features.  
+
+### 2/9/2025
+- Created a list of **additional libraries** to be implemented beyond arithmetic (e.g., string handling, file I/O).  
+
+### 3/9/2025 
+- Learned about the **steps of library creation** in C/C++/Java to understand how `.lib` files will integrate with the linker.  
+- Extended `Grammar_rules.y` by adding grammar rules for:  
+  - **Boolean literals (`true`, `false`)**  
+
+### 4/9/2025  
+- Started coding the **Arithmetic library** (`Library_Functions.lib`).  
+- Implemented the following functions:  
+  - `abs(int)` / `abs(double)`  
+  - `sqrt(double)` using Newton’s method  
+  - `exp(double)` using Taylor series expansion  
+- Wrote **test cases** for existing grammar rules to ensure correctness and coverage.  
+
+---
+
 
