@@ -387,7 +387,7 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
   5. Another `for` loop with multiplication (duplicate for stability testing)  
 
 **Additional Work**
-- Started implementing basic **I/O functions** (`cin`, `cout`, `getline`) for the standard library.
+- Started implementing basic **I/O functions** (`cin`, `cout`, `getline`) for the standard library and tried to implement text Editor
 
 ---
 
