@@ -217,6 +217,53 @@ NN             → ε
 
 # Contributions- Module 2
 
+## Snehitha:
+
+
+## Greeshma:
+
+ ### Summary:
+ In this module, I focused on enhancing the grammar by adding iterative structures, error handling, array initialization rules, function calls, and operator precedence rules. These additions strengthened the expressiveness and robustness of the programming language.
+
+ ### Detailed Work :
+
+### 1. For Loop Grammar 
+Implemented grammar rules for the **for loop**, ensuring proper handling of initialization, condition, and increment/decrement parts. Example usage:
+c
+for (i = 0; i < 10; i++) { ... }
+
+### 2. Error Handling in Iterative Structures  
+Added rules to capture possible **syntax errors** in iterative constructs like `if` and `while`.  
+
+This improves compiler feedback by catching mistakes such as missing parentheses or semicolons, helping programmers debug easily.  
+
+### 3. Array Initialization  
+Introduced grammar rules for **array declaration and initialization**, enabling structured data representation.  
+
+Example usage:  
+```c
+int arr[3] = {1, 2, 3};
+int matrix[2][3] = {{1, 2, 3}, {4, 5, 6}};
+```
+
+### 4. Function Calls  
+Defined grammar rules to support **function calls** with parameters as well as empty parameter lists.  
+
+Example usage:  
+```c
+sum(a, b);
+print();
+```
+
+### 5. Operator Precedence  
+Defined **operator precedence and associativity** rules to ensure expressions are parsed and evaluated in the correct order.  
+
+Example usage:  
+```c
+a + b * c;        // multiplication has higher precedence than addition
+x = y + z;        // assignment has right-associativity
+if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
+```
 
 # Contributions - Module 3
 
@@ -226,7 +273,6 @@ NN             → ε
 
 ### 2/9/2025
 - Compiled a list of **library functions** (arithmetic operations) to be implemented as part of the standard library for our programming language.  
-- Studied how **library creation works** in C/C++/Java, focusing on compilation and linking steps.  
 
 ### 3/9/2025  
 - Studied how **library creation works** in C/C++/Java, focusing on compilation and linking steps.  
