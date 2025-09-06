@@ -218,7 +218,76 @@ NN             → ε
 # Contributions- Module 2
 
 ## Snehitha:
+## Contribution Summary  
+In this session, I worked on the **Functions** aspect of the module, focusing on defining user-defined functions, function declarations, and function calls within the grammar. My contribution emphasized **modularity, reusability, and structured programming practices**.
 
+---
+
+## Detailed Work  
+
+### 1. Function Declaration & Definition  
+- Functions can be **declared** with return types, identifiers, and parameter lists.  
+- A **declaration (prototype)** specifies the function’s type, name, and parameters but does not define its body.  
+- A **definition** provides the full body of the function, including the statements that describe its behavior.  
+
+---
+
+### 2. Function Arguments and Declarations  
+
+#### Function Declarations (FUNCDECL)  
+A function can appear in two forms:  
+
+1. **Function Prototype / Declaration**  
+   - Begins with a return type.  
+   - Followed by a function name (identifier).  
+   - Contains a parameter list inside parentheses.  
+   - Ends with a semicolon.  
+   - Example meaning: *“This declares that a function exists but doesn’t define what it does.”*  
+
+2. **Function Definition**  
+   - Same as a prototype, but instead of ending with a semicolon, it includes a body enclosed in `{ }`.  
+   - Inside the body, there can be multiple statements.  
+   - Example meaning: *“This fully defines what the function does.”*  
+
+---
+
+### 3. Parameter List (PARAMLIST)  
+- Defines what goes inside the parentheses of a function.  
+- Can be:  
+  - One parameter  
+  - Multiple parameters separated by commas  
+  - Empty (function takes no arguments)  
+
+---
+
+### 4. Parameters (PARAM)  
+- Each parameter has a **type** followed by a **name**.  
+- Optionally, it may include **array indexing** (for array parameters).  
+- Each parameter acts as an input variable to the function.  
+
+---
+
+### 5. Return Statements  
+Functions can return values or simply exit:  
+
+1. **Return with a Value**  
+   - Uses the `return` keyword followed by an expression.  
+   - Ends with a semicolon.  
+   - Example meaning: *“Return the result of this expression to the caller.”*  
+
+2. **Return without a Value**  
+   - Just the `return` keyword with a semicolon.  
+   - Example meaning: *“Exit the function without returning anything.”*  
+
+---
+
+### 6. Functional Explanation  
+- **Modularity:** Functions encapsulate logic into reusable blocks.  
+- **Parameters & Arguments:** Functions can take inputs, process them, and return outputs.  
+- **Return Types:** Supports return types like `int`, `float`, `char`, and `void`.  
+- **Integration with Loops:** Functions can include iterative constructs such as `for` loops, enhancing reusability and clarity.  
+
+---
 
 ## Greeshma:
 
