@@ -289,25 +289,36 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 
 ---
 
-## Snehitha 
-### 1/9/2025  
-- Researched **text editor design** in parallel with Greeshma, focusing on editing commands and file handling features.  
+## Snehitha
+**01/09/2025**
+- Researched text editor design in parallel with Greeshma, focusing on editing commands and file handling features.
 
-### 2/9/2025
-- Created a list of **additional libraries** to be implemented beyond arithmetic (e.g., string handling, file I/O).  
+**02/09/2025**
+- Created a list of additional libraries to be implemented beyond arithmetic (e.g., string handling, file I/O).
+  **Link to the Spec Doc for Lib Func:** https://docs.google.com/document/d/1ye-qCDcHGzWspuikXosHASviOivtn5AywaK-I83aARM/edit?usp=sharing
 
-### 3/9/2025 
-- Learned about the **steps of library creation** in C/C++/Java to understand how `.lib` files will integrate with the linker.  
-- Extended `Grammar_rules.y` by adding grammar rules for:  
-  - **Boolean literals (`true`, `false`)**  
+**03/09/2025**
+- Learned about the steps of library creation in C/C++/Java to understand how `.lib` files will integrate with the linker.
+- Extended `Grammar_rules.y` by adding grammar rules for:
+  - Boolean literals (`true`, `false`).
 
-### 4/9/2025  
-- Started coding the **Arithmetic library** (`Library_Functions.lib`).  
-- Implemented the following functions:  
-  - `abs(int)` / `abs(double)`  
-  - `sqrt(double)` using Newton’s method  
-  - `exp(double)` using Taylor series expansion  
-- Wrote **test cases** for existing grammar rules to ensure correctness and coverage.  
+**04/09/2025**
+- Started coding the Arithmetic library (`Library_Functions.lib`).
+  -**Implemented the following functions**:
+    - `min(int, int)` / `min(double, double)`  
+    - `max(int, int)` / `max(double, double)`  
+    - `power(double base, int exp)`
+      
+**05/09/2025**
+ **5 test cases** for grammar and library features:  
+  1. Simple addition (`a + b`)  
+  2. Conditional check with `if–else`  
+  3. `while` loop incrementing counter  
+  4. `for` loop with multiplication  
+  5. Another `for` loop with multiplication (duplicate for stability testing)  
+
+**Additional Work**
+- Started implementing basic **I/O functions** (`cin`, `cout`, `getline`) for the standard library.
 
 ---
 
