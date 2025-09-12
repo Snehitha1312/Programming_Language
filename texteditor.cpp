@@ -20,14 +20,14 @@ void disableRawMode() {
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &E.orig_termios);
 }
 
-void enableRawMode() {
-    tcgetattr(STDIN_FILENO, &E.orig_termios);
-    atexit(disableRawMode);
+// void enableRawMode() {
+//     tcgetattr(STDIN_FILENO, &E.orig_termios);
+//     atexit(disableRawMode);
 
-    termios raw = E.orig_termios;
-    raw.c_lflag &= ~(ECHO | ICANON);
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
+//     termios raw = E.orig_termios;
+//     raw.c_lflag &= ~(ECHO | ICANON);
+//     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+// }
 
 int readKey() {
     char c;
