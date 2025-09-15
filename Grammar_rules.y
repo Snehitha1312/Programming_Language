@@ -10,6 +10,10 @@
 %token DO 
 %token STRING STR             /* STR is literal, STRING token is for type */
 %token TR FL                  /* boolean literals */
+%token CLASS
+%token PUBLIC PRIVATE PROTECTED
+%token ABSTRACT
+
 
 S: STMNTS M MEOF
  | MEOF
@@ -164,6 +168,33 @@ TERM: IDEN
  | INC IDEN INDEX
  | DEC IDEN INDEX
 ;
+
+
+/* OOPS */
+
+/* Encapsulation */
+
+CLASSDECL: CLASS IDEN '{' CLASSBODY '}' ';'
+         | CLASS IDEN ':' ACCESS IDEN '{' CLASSBODY '}' ';'  /* inheritance (optional) */
+;
+
+CLASSBODY: CLASSBODY CLASSMEMBER
+         | CLASSMEMBER
+;
+
+CLASSMEMBER: ACCESS MODIFIER_DECL
+           | ACCESS FUNCDECL
+           | ACCESS ABSTRACTFUNC
+;
+
+ACCESS: PUBLIC | PRIVATE | PROTECTED | /* empty */ ;
+
+MODIFIER_DECL: TYPE DECLLIST ';' ;
+
+
+
+
+/* Abstraction */
 
 ABSTRACTCLASS: ABSTRACT CLASS IDEN '{' ABSTRACTBODY '}' ';'
 ;
