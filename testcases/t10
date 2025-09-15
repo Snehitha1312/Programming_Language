@@ -1,0 +1,11 @@
+if(a!=b){
+    while(i<10){
+        i++;
+    }
+}
+else{
+    do{
+        j--;
+    }
+    while(j>0);
+}

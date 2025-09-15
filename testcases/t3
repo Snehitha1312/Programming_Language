@@ -1,0 +1,8 @@
+int result=19;
+int x=15;
+int y=10;
+do{
+    result = compute(x, y);
+    x++;
+    y--;
+} while (result < 100);

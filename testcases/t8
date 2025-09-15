@@ -1,0 +1,6 @@
+if(x!=0) {
+    result=compute(x, y)? x : y;
+}
+else{
+    z=(a+b)*(c-d);
+}
