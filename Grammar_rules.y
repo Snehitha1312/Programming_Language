@@ -8,9 +8,8 @@
 %right '?' ':'                /* ternary operator*/
 %token RETURN BREAK CONTINUE
 %token DO 
-%token STRING STR             /* STR is literal, STRING token is for type"
-%token TR FL                  /* boolean literals*/
-
+%token STRING STR             /* STR is literal, STRING token is for type */
+%token TR FL                  /* boolean literals */
 
 S: STMNTS M MEOF
  | MEOF
@@ -30,7 +29,8 @@ A: ASNEXPR ';'
  | WHILE M '(' BOOLEXPR ')' M A
  | WHILE M BOOLEXPR ')' M A             /*error handling */
  | DO M A WHILE M '(' BOOLEXPR ')' ';'  
- | FOR '(' ASNEXPR ';' M BOOLEXPR ';' M ASNEXPR ')' M A 
+ /* Fully updated FOR rule */
+ | FOR '(' OPT_ASNEXPR ';' M OPT_BOOLEXPR ';' M OPT_EXPR ')' M A
  | '{' STMNTS '}'
  | '{' '}'
  | EXPR ';'
@@ -43,6 +43,19 @@ A: ASNEXPR ';'
  | ';'                   
 ;
 
+/* FOR loop optional parts */
+OPT_ASNEXPR: ASNEXPR
+ | DECLSTATEMENT
+ | /* empty */
+;
+
+OPT_BOOLEXPR: BOOLEXPR
+ | /* empty */
+;
+
+OPT_EXPR: EXPR
+ | /* empty */
+;
 
 FUNCDECL: TYPE IDEN '(' PARAMLIST ')' ';'
  | TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
@@ -75,7 +88,6 @@ INITLIST: INITLIST ',' EXPR
  | EXPR
 ;
 
-
 INDEX: '[' EXPR ']'
  | '[' EXPR ']' INDEX
 ;
@@ -89,12 +101,14 @@ TYPE: INT
 
 ASSGN: '=' | PASN | MASN | DASN | SASN ;
 
-
 LVAL: IDEN
     | IDEN INDEX
 ;
 
-ASNEXPR: LVAL ASSGN EXPR ;
+/* ASNEXPR can be either an assignment or just a simple expression like i++ */
+ASNEXPR: LVAL ASSGN EXPR
+ | EXPR
+;
 
 BOOLEXPR:
   BOOLEXPR OR M BOOLEXPR
@@ -111,7 +125,6 @@ BOOLEXPR:
  | FL
 ;
 
-
 EXPR: EXPR '+' EXPR
  | EXPR '-' EXPR
  | EXPR '*' EXPR
@@ -123,7 +136,6 @@ EXPR: EXPR '+' EXPR
  | '-' EXPR %prec UMINUS
 ;
 
-
 FUNC_CALL: IDEN '(' ARGLIST ')'
 ;
 
@@ -132,12 +144,9 @@ ARGLIST: EXPR ',' ARGLIST
  | /* empty */
 ;
 
-
-
 LVALIST: LVAL
        | LVAL ',' LVALIST
 ;
-
 
 TERM: IDEN
  | IDEN INDEX
