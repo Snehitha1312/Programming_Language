@@ -37,6 +37,20 @@ public:
             str++;
         }
     }
+
+    // Print integer
+    void printInt(int x) {
+        char buffer[50];
+        sprintf(buffer, "%d", x);  // convert int → string
+        printString(buffer);
+    }
+
+    // Print double
+    void printDouble(double x) {
+        char buffer[100];
+        sprintf(buffer, "%lf", x); // convert double → string
+        printString(buffer);
+    }
     
 };
 
