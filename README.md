@@ -394,5 +394,61 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 - Started implementing basic **I/O functions** (`cin`, `cout`, `getline`) for the standard library and tried to implement text Editor
 
 ---
+# Contributions - Module 4  
+
+## Snehitha  
+### 15/9/2025  ( Lines- 176-193)
+- Added **Encapsulation grammar rules** in `Grammar_rules.gs`.
+- Implemented grammar rules for **Constructors**.   
+
+### 16/9/2025  
+- Read about **text editor design** and explored about how to implement it.
+- Decided extension for Library_functions
+
+### 17/9/2025 and 18/9/2025  (Lines 132-200)
+- In the `StringHandler` class of Library_functions.gs the following were implemented:  
+  - `length(const char* str)`  
+  - `substr(const char* str, int start, int len, char* res)`  
+  - `insert(char* str, int pos, const char* toInsert)`  
+  - `compare(const char* s1, const char* s2)`  
+  - `erase(char* str, int pos, int len)`  
+  - `islower(char c)`  
+
+### 19/9/2025 (Lines 12-31)
+- Implemented the following in **IOHandler class**:  
+  - `readChar()`  
+  - `readString(char* buffer, int size)`  
+  - `readInt()`   
+- Contributed **5 test cases** covering grammar rules, string functions, and I/O functions.  
+
+---
+
+## Greeshma  
+### 15/9/2025  (Lines 206-214)
+- Added **Abstraction grammar rules** in `Grammar_rules.gs`.
+- Implemented grammar rules for **Destructors**.  
+
+### 16/9/2025  
+- Read about **text editor design** and explored how to implement it.
+- Decided extension for Library_functions
+
+### 17/9/2025 and 18/9/2025  (Lines 203-232)
+-  In the `StringHandler` class of Library_functions.gs the following were implemented:  
+  - `isupper(char c)`  
+  - `tolower(char c)`  
+  - `toupper(char c)`  
+  - `isalpha(char c)`  
+  - `isalnum(char c)`  
+  - `isnum(char c)`  
+
+### 19/9/2025  (Lines 34-53)
+- Implemented the following in **IOHandler class**:  
+  - `printString(const char* str)`  
+  - `printInt(int x)`  
+  - `printDouble(double x)`  
+- Contributed **5 test cases** covering grammar rules, string functions, and I/O functions.  
+
+---
+
 
 
