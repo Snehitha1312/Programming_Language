@@ -177,4 +177,36 @@ public:
     bool islower(char c) {
         return (c >= 'a' && c <= 'z');
     }
+
+    // 7. isupper
+    bool isupper(char c) {
+        return (c >= 'A' && c <= 'Z');
+    }
+
+    // 8. tolower
+    char tolower(char c) {
+        if (isupper(c)) return c + ('a' - 'A');
+        return c;
+    }
+
+    // 9. toupper
+    char toupper(char c) {
+        if (islower(c)) return c - ('a' - 'A');
+        return c;
+    }
+
+    // 10. isalpha
+    bool isalpha(char c) {
+        return (islower(c) || isupper(c));
+    }
+
+    // 11. isalnum
+    bool isalnum(char c) {
+        return (isalpha(c) || isnum(c));
+    }
+
+    // 12. isnum (check digit)
+    bool isnum(char c) {
+        return (c >= '0' && c <= '9');
+    }
 };
