@@ -140,7 +140,7 @@ EXPR: EXPR '+' EXPR
  | '-' EXPR %prec UMINUS
 ;
 
-FUNC_CALL: IDEN '(' ARGLIST ')'
+FUNC_CALL: IDEN '(' ARGLIST ')' | '~' IDEN '(' ')' ';'
 ;
 
 ARGLIST: EXPR ',' ARGLIST
@@ -202,13 +202,6 @@ ACCESS: PUBLIC
 
 MODIFIER_DECL: TYPE DECLLIST ';' ;
 
-/* Constructor */
-
-CONSTRUCTOR: IDEN '(' PARAMLIST ')' ';' ;
-
-/* Destrcutor */
-
-DESTRUCTOR: '~' IDEN '(' ')' ';' ;
 
 
 /* Abstraction */
