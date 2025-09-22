@@ -1,0 +1,18 @@
+class Animal {
+    protected int legs;
+    public void setLegs(int l) {
+        legs = l;
+    }
+};
+
+class Dog : Animal {
+    public void bark() {
+        legs = 4;
+    }
+};
+
+void main() {
+    Dog d = new Dog();
+    d.setLegs(4);
+    d.bark();
+}
