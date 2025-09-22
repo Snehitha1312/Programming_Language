@@ -87,6 +87,7 @@ DECL: IDEN
  | IDEN '=' EXPR
  | IDEN INDEX
  | IDEN INDEX '=' '{' INITLIST '}'   /*initializing array*/
+ | OBJDECLSTATEMENT
 ;
 
 INITLIST: INITLIST ',' EXPR
