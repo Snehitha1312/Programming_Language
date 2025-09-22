@@ -13,6 +13,7 @@
 %token CLASS
 %token PUBLIC PRIVATE PROTECTED
 %token ABSTRACT
+%token NEW
 
 
 S: STMNTS M MEOF
@@ -212,6 +213,24 @@ ABSTRACTBODY: ABSTRACTBODY ABSTRACTMEMBER
 ABSTRACTMEMBER: ACCESS ABSTRACTFUNC ;
 
 ABSTRACTFUNC: TYPE IDEN '(' PARAMLIST ')' ';' ;
+
+
+
+/*Oject Declaration*/
+
+OBJDECLSTATEMENT: OBJDECL ';'
+                | OBJDECL error MEOF /*eror handling - you can remove if u want*/
+;
+
+OBJDECL: IDEN IDEN
+       | IDEN IDEN '=' OBJINIT
+;
+
+OBJINIT: NEW IDEN '(' ARGLIST ')'
+       | NEW IDEN '(' ')'
+;
+
+
 
 
 /* Markers */
