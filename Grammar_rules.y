@@ -222,14 +222,10 @@ OBJDECLSTATEMENT: OBJDECL ';'
                 | OBJDECL error MEOF /*eror handling - you can remove if u want*/
 ;
 
-OBJDECL: IDEN IDEN
-       | IDEN IDEN '=' OBJINIT
-;
 
-OBJINIT: NEW IDEN '(' ARGLIST ')'
-       | NEW IDEN '(' ')'
+OBJDECL: IDEN IDEN ';'                        /* ClassName obj*/
+           | IDEN IDEN '=' NEW IDEN '(' ARGLIST ')' ';'  /* ClassName obj = new ClassName(args); */
 ;
-
 
 
 
