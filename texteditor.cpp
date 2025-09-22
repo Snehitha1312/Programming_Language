@@ -77,3 +77,47 @@ void moveCursor(char key) {
     }
 }
 
+void insertChar(char c) {
+    E.rows[E.cy].insert(E.rows[E.cy].begin() + E.cx, c);
+    E.cx++;
+}
+
+void processKeypress() {
+    int c = readKey();
+
+    if (!E.insert_mode) {
+        switch (c) {
+            case 'i': E.insert_mode = true; break;
+            case 'q': exit(0); break;
+            case 's': saveFile(); break;
+            default: moveCursor(c);
+        }
+    } else {
+        if (c == 27) { // ESC
+            E.insert_mode = false;
+        } else if (c == 127 || c == '\b') { // Backspace
+            if(E.cx>0) { E.rows[E.cy].erase(E.cx-1,1); E.cx--; }
+        } else if (c == '\r') { // Enter
+            string newLine = E.rows[E.cy].substr(E.cx);
+            E.rows[E.cy] = E.rows[E.cy].substr(0, E.cx);
+            E.rows.insert(E.rows.begin() + E.cy + 1, newLine);
+            E.cy++; E.cx = 0;
+        } else {
+            insertChar(c);
+        }
+    }
+}
+
+int main(int argc, char* argv[]) {
+    if (argc >= 2) openFile(argv[1]);
+    enableRawMode();
+
+    while (true) {
+        drawRows();
+        cout << "\x1b[" << E.cy+1 << ";" << E.cx+1 << "H"; // Move cursor
+        cout.flush();
+        processKeypress();
+    }
+
+    return 0;
+}
