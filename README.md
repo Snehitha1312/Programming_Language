@@ -1,51 +1,11 @@
-# Status Report – Programming Language(Module 1)
+# Status Report – Programming Language
 
-## Objective of Module 1
-- Designing the grammar rules and syntactic structure of the new language.  
-- Implementing a lexer (tokenizer) and parser using **Lex** and **Yacc**.  
-- Planning for the development of a basic language editor.  
-
----
-
-## Current Progress
-
-### 1. Lexical Analyzer (`.l` file)
-A base lexical analyzer has been implemented using **Lex**.  
-
-- The lexer scans the input source code and breaks it into **tokens**, which are passed to the parser.  
-- **Current tokens supported include:**  
-  - **Keywords:** `if`, `else`, `while`, `int`, `float`, `char`, etc.  
-  - **Operators:** `+`, `-`, `*`, `/`, `=`, `==`, `!=`, `<`, `>`, `++`, `--`.  
-  - **Identifiers:** User-defined variable names.  
-  - **Constants:** Numeric constants (integers and floats).  
-  - **Delimiters & Punctuation:** `;`, `,`, `{`, `}`, `(`, `)`.  
-
-- For operators like `++` and `--`, values are appended to semantic values (`yylval.str`) to be passed correctly to the parser.  
+## Objective
+- Designing the grammar rules of the new language.  
+- Implementing libray functions that can be used.
+- Developing text editor.
 
 ---
-
-### 2. Syntax Analyzer (`.y` file)
-A base syntax analyzer has been implemented using **Yacc**.  
-
-- The parser uses the tokens from the lexer and checks if the input program follows the defined **grammar rules**.  
-
-- **Currently supported grammar rules:**  
-  - **Variable declarations:** `int x;`, `float y;`  
-  - **Assignment statements:** `x = 10;`, `y = x + 2;`  
-  - **Conditional statements:**  
-    ```c
-    if (condition) {
-        ...
-    } else {
-        ...
-    }
-    ```  
-  - **Loops (basic):** `while` loops are partially supported.  
-  - **Expressions:** Arithmetic and relational expressions are handled.  
-  - **Error handling:** Parser prints **syntax error messages** when unexpected tokens appear.  
-
----
-
 
 ## Grammar Rules:
 
@@ -451,4 +411,40 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 ---
 
 
+# Contributions – Module 5
+
+## Greeshma and Snehitha
+
+- Wrote **5 test cases** to verify the features implemented by the Compiler team:
+  - Variable declarations and assignments
+  - Control structures (`if`, `else`, `while`, `for`)
+  - Functions and recursion
+  - Class declarations with methods
+  - Object creation and member access  
+
+- Implemented and compiled the vi-like editor source code partly in C++ to mimic the intended behavior.  
+  - Screenshot of the compiled editor:  
+<img width="644" height="153" alt="image" src="https://github.com/user-attachments/assets/743b28c2-3f77-4b2a-bb54-6b46a6c5286a" />
+
+
+- Collaborated with the Compiler team to **observe and note errors/conflicts**:
+  - Detected few grammar conflicts with rules which we will try to reduce 
+
+- Implemented **vi-like editor** in closest language (C++) as a reference:
+  - Understood system-level terminal handling (like `termios.h`) for proper input behavior.
+
+- Developed **three standard libraries** in the custom language (`.gs` files):
+  - **Arithmetic.gs** – provides math operations (`abs`, `sqrt`, `exp`, `power`, `max`, `min`)  
+    ```cpp
+    Arithmetic a;
+    print(a.power(2, 10));   // Output: 1024
+    ```
+  - **IO.gs** – provides input/output operations (`print`, `readInt`, `readString`)
+  - **StringHandler.gs** – provides string operations (`length`, `concat`, `substring`, `compare`)  
+ 
+- **Summary of work**:
+  - 5 test codes validated compiler features
+  - Vi-like editor implemented and compiled (C++ and partly with our compiler)
+  - Compiler errors/conflicts noted and workarounds suggested
+  - Libraries implemented for modular programming support
 
