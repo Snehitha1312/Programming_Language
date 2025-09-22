@@ -137,7 +137,8 @@ EXPR: EXPR '+' EXPR
  | EXPR '/' EXPR
  | EXPR '%' EXPR
  | EXPR '?' EXPR ':' EXPR        /*ternary-condition*/
- | FUNC_CALL                  
+ | FUNC_CALL   
+ |  MEMBERACCESS               
  | TERM
  | '-' EXPR %prec UMINUS
 ;
@@ -228,6 +229,10 @@ OBJDECL: IDEN IDEN ';'                        /* ClassName obj*/
            | IDEN IDEN '=' NEW IDEN '(' ARGLIST ')' ';'  /* ClassName obj = new ClassName(args); */
 ;
 
+/* Member Access */
+MEMBERACCESS: LVAL '.' IDEN
+             | LVAL '.' FUNC_CALL
+;
 
 
 /* Markers */
