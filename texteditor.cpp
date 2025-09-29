@@ -112,19 +112,23 @@ void processCommand() {
 void processKeypress() {
     int c = readKey();
 
-    if (E.command_mode) {
-        if (c == '\r') { // Enter
-            processCommand();
-        } else if (c == 127 || c == '\b') { // Backspace
-            if (!E.command_buffer.empty()) E.command_buffer.pop_back();
-        } else if (c == 27) { // ESC
-            E.command_mode = false;
-            E.command_buffer.clear();
-        } else {
-            E.command_buffer.push_back(c);
-        }
-        return;
+   if (E.command_mode) {
+    if (c == '\r' || c == '\n') { // handle Enter
+        processCommand();       // execute :w, :q, :wq
+        drawRows();             // redraw screen after command
+        cout << "\x1b[" << E.cy+1 << ";" << E.cx+1 << "H";
+        cout.flush();
+    } else if (c == 127 || c == '\b') { // Backspace
+        if (!E.command_buffer.empty()) E.command_buffer.pop_back();
+    } else if (c == 27) { // ESC
+        E.command_mode = false;
+        E.command_buffer.clear();
+    } else {
+        E.command_buffer.push_back(c);
     }
+    return;
+}
+
 
     if (!E.insert_mode) {
         switch (c) {
@@ -162,12 +166,21 @@ int main(int argc, char* argv[]) {
 
     enableRawMode();
 
-    while (true) {
-        drawRows();
-        cout << "\x1b[" << E.cy+1 << ";" << E.cx+3 << "H"; // Adjust cursor (2 chars for line numbers + space)
-        cout.flush();
-        processKeypress();
+   while (true) {
+    drawRows();
+
+    if (E.command_mode) {
+        // Place cursor after ":" and whatever was typed
+        cout << "\x1b[" << (E.rows.size() + 2) << ";" << (E.command_buffer.size() + 2) << "H";
+    } else {
+        // Normal/Insert: put cursor in text buffer
+        cout << "\x1b[" << E.cy+1 << ";" << E.cx+3 << "H";
     }
+
+    cout.flush();
+    processKeypress();
+}
+
 
     return 0;
 }
