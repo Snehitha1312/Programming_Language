@@ -84,7 +84,21 @@ void insertChar(char c) {
     E.rows[E.cy].insert(E.rows[E.cy].begin() + E.cx, c);
     E.cx++;
 }
+void deleteChar() {
+    if (E.cx < E.rows[E.cy].size()) {
+        E.rows[E.cy].erase(E.cx,1);
+    }
+}
 
+void processCommand() {
+    if (E.command_buffer == "q") exit(0);
+    else if (E.command_buffer == "w") saveFile();
+    else if (E.command_buffer == "wq") { saveFile(); exit(0); }
+    else E.status_msg = "Not an editor command: :" + E.command_buffer;
+
+    E.command_buffer.clear();
+    E.command_mode = false;
+}
 
     int c = readKey();
 
@@ -158,21 +172,7 @@ void processKeypress() {
     }
 }
 
-void deleteChar() {
-    if (E.cx < E.rows[E.cy].size()) {
-        E.rows[E.cy].erase(E.cx,1);
-    }
-}
 
-void processCommand() {
-    if (E.command_buffer == "q") exit(0);
-    else if (E.command_buffer == "w") saveFile();
-    else if (E.command_buffer == "wq") { saveFile(); exit(0); }
-    else E.status_msg = "Not an editor command: :" + E.command_buffer;
-
-    E.command_buffer.clear();
-    E.command_mode = false;
-}
 
 int main(int argc, char* argv[]) {
     if (argc >= 2) openFile(argv[1]);
