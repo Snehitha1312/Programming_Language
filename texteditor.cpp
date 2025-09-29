@@ -13,9 +13,9 @@ struct Editor {
     string filename;
     int cx = 0, cy = 0;
     bool insert_mode = false;
+    bool command_mode = false;
     string command_buffer;
     string status_msg;
-    termios orig_termios;
     termios orig_termios;
 } E;
 
@@ -85,7 +85,7 @@ void insertChar(char c) {
     E.cx++;
 }
 
-void processKeypress() {
+
     int c = readKey();
 
     if (!E.insert_mode) {
@@ -158,6 +158,21 @@ void processKeypress() {
     }
 }
 
+void deleteChar() {
+    if (E.cx < E.rows[E.cy].size()) {
+        E.rows[E.cy].erase(E.cx,1);
+    }
+}
+
+void processCommand() {
+    if (E.command_buffer == "q") exit(0);
+    else if (E.command_buffer == "w") saveFile();
+    else if (E.command_buffer == "wq") { saveFile(); exit(0); }
+    else E.status_msg = "Not an editor command: :" + E.command_buffer;
+
+    E.command_buffer.clear();
+    E.command_mode = false;
+}
 
 int main(int argc, char* argv[]) {
     if (argc >= 2) openFile(argv[1]);
