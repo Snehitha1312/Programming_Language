@@ -9,7 +9,7 @@ public:
     }
 
     // push_back
-    void push_back(INT val) {
+    void push_back(int val) {
         if (vsize < 1000) {
             arr[vsize] = val;
             vsize++;
@@ -29,13 +29,13 @@ public:
     }
 
     // get element
-    int at(INT index) {
+    int at(int index) {
         if (index < 0 || index >= vsize) return -1; // error value
         return arr[index];
     }
 
     // set element
-    void set(INT index, INT val) {
+    void set(int index,int val) {
         if (index < 0 || index >= vsize) return;
         arr[index] = val;
     }
@@ -52,7 +52,7 @@ public:
 
     // print all elements (for testing)
     void print() {
-        INT i;
+        int i;
         for (i = 0; i < vsize; i++) {
             sys_print_int(arr[i]);  // assuming sys call for printing int
             sys_print_char(' ');
