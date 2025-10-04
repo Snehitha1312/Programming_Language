@@ -10,13 +10,21 @@
 %token DO 
 %token STRING STR             /* STR is literal, STRING token is for type */
 %token TR FL                  /* boolean literals */
+%token BOOL                   /* boolean type */
 %token CLASS
 %token PUBLIC PRIVATE PROTECTED
 %token ABSTRACT
 %token NEW
+%token IMPORT import          /* support lowercase import */
+%token SYSOPEN_TOK SYSCLOSE_TOK SYSREAD_TOK SYSWRITE_TOK
+%token CHARLIT   /* e.g., 'x' */
 
-
+/* Start symbol */
 S: STMNTS M MEOF
+ | IMPORTDECL S
+ | EXTERNDECL S
+ | CLASSDECL S
+ | ABSTRACTCLASS S
  | MEOF
  | error MEOF
 ;
@@ -41,6 +49,7 @@ A: ASNEXPR ';'
  | EXPR ';'
  | DECLSTATEMENT
  | FUNCDECL
+ | SYSCALL
  | RETURN EXPR ';'
  | RETURN ';'             
  | BREAK ';'            
@@ -103,9 +112,20 @@ TYPE: INT
  | CHAR
  | VOID
  | STRING
+ | BOOL
 ;
 
 ASSGN: '=' | PASN | MASN | DASN | SASN ;
+
+PRIMARY: IDEN
+       | IDEN INDEX
+       | MEMBERACCESS   /* recursion allows chaining */
+;
+
+/* Member Access */
+MEMBERACCESS: PRIMARY '.' IDEN
+            | PRIMARY '.' FUNC_CALL
+;
 
 LVAL: IDEN
     | IDEN INDEX
@@ -162,6 +182,7 @@ TERM: IDEN
  | TR
  | FL
  | '(' EXPR ')'
+| CHARLIT
  | IDEN INC
  | IDEN DEC
  | IDEN INDEX INC
@@ -172,6 +193,22 @@ TERM: IDEN
  | DEC IDEN INDEX
 ;
 
+/* --- System Call Rules --- */
+
+SYSCALL: SYSOPEN
+       | SYSCLOSE
+       | SYSREAD
+       | SYSWRITE
+;
+
+SYSOPEN: SYSOPEN_TOK '(' ARGLIST ')' ';' ;
+SYSCLOSE: SYSCLOSE_TOK '(' ARGLIST ')' ';' ;
+SYSREAD: SYSREAD_TOK '(' ARGLIST ')' ';' ;
+SYSWRITE: SYSWRITE_TOK '(' ARGLIST ')' ';' ;
+
+
+/* Imports */
+IMPORTDECL: IMPORT IDEN ';' ;
 
 /* OOPS */
 
@@ -225,14 +262,10 @@ OBJDECLSTATEMENT: OBJDECL ';'
 ;
 
 
-OBJDECL: IDEN IDEN ';'                        /* ClassName obj*/
+OBJDECL: IDEN IDEN                        /* ClassName obj*/
            | IDEN IDEN '=' NEW IDEN '(' ARGLIST ')' ';'  /* ClassName obj = new ClassName(args); */
-;
 
-/* Member Access */
-MEMBERACCESS: LVAL '.' IDEN
-             | LVAL '.' FUNC_CALL
-;
+
 
 
 /* Markers */
