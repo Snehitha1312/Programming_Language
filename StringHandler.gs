@@ -37,6 +37,17 @@ public
         return s1[i] - s2[i];
     }
 
+    void insert(char str[], int pos, char c) {
+        int n = length(str);
+        if (pos < 0) pos = 0;
+        if (pos > n) pos = n;
+
+        for (int i = n; i >= pos; i--) {
+            str[i + 1] = str[i];
+        }
+        str[pos] = c;
+    }
+
     //  erase
     void erase(char str[], int pos, int len) {
         int n = length(str);
