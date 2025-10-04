@@ -2,7 +2,7 @@
 class StringHandler {
 public:
     // length
-    int length(const char* str) {
+    int length(char str[]) {
         int len = 0;
         while (str[len] != '\0') {
             len++;
@@ -11,7 +11,7 @@ public:
     }
 
     // substr
-    void substr(const char* str, int start, int len, char* res) {
+    void substr(char str[], int start, int len, char res[]) {
         int n = length(str);
         if (start < 0 || start >= n) {
             res[0] = '\0'; // invalid start
@@ -26,7 +26,7 @@ public:
 
 
     // compare
-    int compare(const char* s1, const char* s2) {
+    int compare(char s1[], char s2[]) {
         int i = 0;
         while (s1[i] != '\0' && s2[i] != '\0') {
             if (s1[i] != s2[i]) {
@@ -38,7 +38,7 @@ public:
     }
 
     //  erase
-    void erase(char* str, int pos, int len) {
+    void erase(char str[], int pos, int len) {
         int n = length(str);
         if (pos < 0 || pos >= n) return;
 
