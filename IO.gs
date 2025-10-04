@@ -1,5 +1,5 @@
 class IOHandler {
-public:
+public
     //READ CHARACTER 
     char readChar() {
         char c[1];

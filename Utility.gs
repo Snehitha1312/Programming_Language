@@ -1,9 +1,22 @@
 class Utility {
-public:
-    // swap
-    template <typename T>
-    void swap(T &a, T &b) {
-        T temp = a;
+public
+    // Swap for int
+    void swap(int &a, int &b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+
+    // Swap for float
+    void swap(float &a, float &b) {
+        float temp = a;
+        a = b;
+        b = temp;
+    }
+
+    // Swap for char
+    void swap(char &a, char &b) {
+        char temp = a;
         a = b;
         b = temp;
     }
@@ -11,10 +24,10 @@ public:
 
 
 class Algorithms {
-private:
+private
     Utility util;
 
-public:
+public
     // Insertion 
     void insert(int arr[], int &n, int pos, int value) {
         if (pos < 0 || pos > n) return;
@@ -26,7 +39,7 @@ public:
         n++;
     }
 
-    // sort
+    // Sort
     void sort(int arr[], int n) {
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
@@ -47,3 +60,6 @@ public:
         }
     }
 };
+
+
+

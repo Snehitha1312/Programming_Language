@@ -5,11 +5,11 @@
 //define O_TRUNC   512 // truncate file if it exists
 //define O_APPEND  1024 // append mode
 class FileHandler {
-private:
+private
     int fd;         // file descriptor
     bool isOpen;    // flag to check if file is open
 
-public:
+public
     FileHandler() {
         fd = -1;
         isOpen = false;

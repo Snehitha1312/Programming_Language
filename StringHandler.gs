@@ -1,6 +1,6 @@
 
 class StringHandler {
-public:
+public
     // length
     int length(char str[]) {
         int len = 0;

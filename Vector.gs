@@ -1,11 +1,11 @@
 
 // Vector for int
 class VectorInt {
-private:
+private
     int arr[1000];
     int vsize;
 
-public:
+public
     VectorInt() {
         vsize = 0;
     }
@@ -58,11 +58,11 @@ public:
 // Vector for float
 // ===============================
 class VectorFloat {
-private:
+private
     float arr[1000];
     int vsize;
 
-public:
+public
     VectorFloat() {
         vsize = 0;
     }
@@ -113,11 +113,11 @@ public:
 // Vector for char
 // ===============================
 class VectorChar {
-private:
+private
     char arr[1000];
     int vsize;
 
-public:
+public
     VectorChar() {
         vsize = 0;
     }

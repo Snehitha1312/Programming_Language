@@ -16,7 +16,7 @@
 %token ABSTRACT
 %token NEW
 %token IMPORT import          /* support lowercase import */
-%token SYSOPEN_TOK SYSCLOSE_TOK SYSREAD_TOK SYSWRITE_TOK
+%token sys_open sys_close sys_read sys_write
 %token CHARLIT   /* e.g., 'x' */
 
 /* Start symbol */
@@ -201,10 +201,10 @@ SYSCALL: SYSOPEN
        | SYSWRITE
 ;
 
-SYSOPEN: SYSOPEN_TOK '(' ARGLIST ')' ';' ;
-SYSCLOSE: SYSCLOSE_TOK '(' ARGLIST ')' ';' ;
-SYSREAD: SYSREAD_TOK '(' ARGLIST ')' ';' ;
-SYSWRITE: SYSWRITE_TOK '(' ARGLIST ')' ';' ;
+SYSOPEN: sys_open '(' ARGLIST ')' ';' ;
+SYSCLOSE: sys_close '(' ARGLIST ')' ';' ;
+SYSREAD: sys_read '(' ARGLIST ')' ';' ;
+SYSWRITE: sys_write '(' ARGLIST ')' ';' ;
 
 
 /* Imports */
