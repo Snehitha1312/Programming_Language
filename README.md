@@ -448,3 +448,40 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
   - Compiler errors/conflicts noted and workarounds suggested
   - Libraries implemented for modular programming support
 
+---
+
+ # Contributions – Module 6
+
+## Greeshma and Snehitha
+
+- Developed and integrated **system-level and utility libraries** for the custom language (`.gs` files):
+  - **FileHandler.gs** – Handles file operations using system calls
+    - Implemented: `fopen`, `fclose`, `fread`, `fwrite`, `is_open`
+    - Used syscalls: `sys_open`, `sys_read`, `sys_write`, `sys_close` 
+    - Defined constants for modes: `O_RDONLY`, `O_WRONLY`, `O_RDWR`, `O_CREAT`, `O_TRUNC`, `O_APPEND`
+  - **Termios.gs** – Implemented a terminal control library
+    - Created `Termios` struct and `TerminalHandler` class
+    - Functions: `enableRawMode`, `disableRawMode`, `tcgetattr`, `tcsetattr`
+    - Simulated raw mode activation/deactivation for terminal input
+  - **Vector.gs** – Implemented vector data structures:
+    - Classes: `VectorInt`, `VectorFloat`, `VectorChar`
+    - Functions: `push_back`, `pop_back`, `size`, `at`, `set`, `clear`, `empty`, `print`
+    - Used system calls for display: `sys_print_int`, `sys_print_double`, `sys_print_char`
+  - **Utility.gs** – Provided helper and algorithmic functions
+    - `swap()` for int, float, and char types
+    - Algorithms: `insert`, `sort`, `reverse`
+
+- Added **syscall grammar rules and rules for import** in `Grammar.y` for file operations
+
+- Modified and enhanced **TextEditor.gs** to integrate libraries:
+   - Imported: `IO`, `StringHandler`, `Vector`, `FileHandler`, `Utility`, `Termios`
+   - Updated file operations to use the new `FileHandler` instead of standard I/O
+   - Integrated `TerminalHandler` for toggling raw mode
+   - Improved internal features: cursor movement, command mode, insert mode
+   - Ensured all modifications adhere to the custom grammar rules of our language not C++
+
+- **Summary of work**:
+- Implemented system-level file and terminal handling libraries
+- Built algorithmic and data structure support modules (`Vector`, `Utility`)
+- Added syscall grammar integration for language consistency
+- Modified the TextEditor to follow our programming language and use libraries implemented by us
