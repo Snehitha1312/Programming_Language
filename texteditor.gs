@@ -8,8 +8,8 @@ import Termios;
 TerminalHandler th;
 
 // Constants
-#define MAX_ROWS 1024
-#define MAX_COLS 1024
+//define MAX_ROWS 1024
+//define MAX_COLS 1024
 
 // Instances
 IOHandler io;
@@ -20,7 +20,7 @@ Utility util;
 // Editor structure
 class Editor {
 public
-    char rows[MAX_ROWS][MAX_COLS]; // text rows
+    char rows[1024][1024]; // text rows
     int rowCount = 0;
     char filename[256];
     int cx = 0;
@@ -60,7 +60,7 @@ void openFile(char fname[]) {
         return;
     }
 
-    char buffer[MAX_ROWS * MAX_COLS];
+    char buffer[1024* 1024];
     int bytesRead = fh.fread(buffer, sizeof(buffer));
 
     int start = 0;
@@ -68,7 +68,7 @@ void openFile(char fname[]) {
     for (int i = 0; i < bytesRead; i++) {
         if (buffer[i] == '\n') {
             int len = i - start;
-            if (len >= MAX_COLS) len = MAX_COLS - 1;
+            if (len >= 1024) len = 1024 - 1;
             for (int j = 0; j < len; j++) {
                 E.rows[E.rowCount][j] = buffer[start + j];
             }
@@ -79,7 +79,7 @@ void openFile(char fname[]) {
     }
     if (start < bytesRead) {
         int len = bytesRead - start;
-        if (len >= MAX_COLS) len = MAX_COLS - 1;
+        if (len >= 1024) len = 1024 - 1;
         for (int j = 0; j < len; j++) {
             E.rows[E.rowCount][j] = buffer[start + j];
         }
@@ -244,7 +244,7 @@ void processKeypress() {
             }
         }
         else if (c == '\r') { 
-            char newLine[MAX_COLS];
+            char newLine[1024];
             sh.substr(E.rows[E.cy], E.cx, sh.length(E.rows[E.cy]) - E.cx, newLine);
             E.rows[E.cy][E.cx] = '\0';
             for (int i = E.rowCount; i > E.cy + 1; i--) {
