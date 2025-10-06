@@ -22,7 +22,7 @@ public
 
         while (TR) {
             float newGuess = 0.5 * (guess + x / guess);
-            if (abs(newGuess - guess) < eps) BREAK;
+            if (abs(newGuess - guess) < eps) break;
             guess = newGuess;
         }
 
