@@ -104,7 +104,9 @@ INITLIST: INITLIST ',' EXPR
 ;
 
 INDEX: '[' EXPR ']'
- | '[' EXPR ']' INDEX
+ | '[' EXPR ']' INDEX 
+ | '[' ']'
+ | '[' ']' INDEX
 ;
 
 TYPE: INT
