@@ -1,8 +1,7 @@
 
 class StringHandler {
-public
     // length
-    int length(char str[]) {
+   public int length(char str[]) {
         int len = 0;
         while (str[len] != '\0') {
             len++;
@@ -11,7 +10,7 @@ public
     }
 
     // substr
-    void substr(char str[], int start, int len, char res[]) {
+   public void substr(char str[], int start, int len, char res[]) {
         int n = length(str);
         if (start < 0 || start >= n) {
             res[0] = '\0'; // invalid start
@@ -26,7 +25,7 @@ public
 
 
     // compare
-    int compare(char s1[], char s2[]) {
+   public int compare(char s1[], char s2[]) {
         int i = 0;
         while (s1[i] != '\0' && s2[i] != '\0') {
             if (s1[i] != s2[i]) {
@@ -37,7 +36,7 @@ public
         return s1[i] - s2[i];
     }
 
-    void insert(char str[], int pos, char c) {
+    public void insert(char str[], int pos, char c) {
         int n = length(str);
         if (pos < 0) pos = 0;
         if (pos > n) pos = n;
@@ -49,7 +48,7 @@ public
     }
 
     //  erase
-    void erase(char str[], int pos, int len) {
+   public void erase(char str[], int pos, int len) {
         int n = length(str);
         if (pos < 0 || pos >= n) return;
 
@@ -60,39 +59,39 @@ public
     }
 
     // islower
-    bool islower(char c) {
+   public bool islower(char c) {
         return (c >= 'a' && c <= 'z');
     }
 
    // isupper
-    bool isupper(char c) {
+   public bool isupper(char c) {
         return (c >= 'A' && c <= 'Z');
     }
 
     // tolower
-    char tolower(char c) {
+   public char tolower(char c) {
         if (isupper(c)) return c + ('a' - 'A');
         return c;
     }
 
     // toupper
-    char toupper(char c) {
+   public char toupper(char c) {
         if (islower(c)) return c - ('a' - 'A');
         return c;
     }
 
     //isalpha
-    bool isalpha(char c) {
+   public bool isalpha(char c) {
         return (islower(c) || isupper(c));
     }
 
     // isalnum
-    bool isalnum(char c) {
+   public bool isalnum(char c) {
         return (isalpha(c) || isnum(c));
     }
 
     // isnum (check digit)
-    bool isnum(char c) {
+   public bool isnum(char c) {
         return (c >= '0' && c <= '9');
     }
 };

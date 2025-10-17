@@ -9,7 +9,7 @@ public
     VectorInt() {
         vsize = 0;
     }
-
+public
     void push_back(int val) {
         if (vsize < 1000) {
             arr[vsize] = val;
@@ -17,32 +17,39 @@ public
         }
     }
 
+public
     void pop_back() {
         if (vsize > 0) vsize--;
     }
 
+public
     int size() {
         return vsize;
     }
 
+public
     int at(int index) {
         if (index < 0 || index >= vsize) return -1;
         return arr[index];
     }
 
+public
     void set(int index, int val) {
         if (index < 0 || index >= vsize) return;
         arr[index] = val;
     }
 
+public
     void clear() {
         vsize = 0;
     }
 
+public
     bool empty() {
         return (vsize == 0);
     }
 
+public
     void print() {
         int i;
         for (i = 0; i < vsize; i++) {
@@ -67,6 +74,7 @@ public
         vsize = 0;
     }
 
+public
     void push_back(float val) {
         if (vsize < 1000) {
             arr[vsize] = val;
@@ -74,32 +82,39 @@ public
         }
     }
 
+public
     void pop_back() {
         if (vsize > 0) vsize--;
     }
 
+public
     int size() {
         return vsize;
     }
 
+public
     float at(int index) {
         if (index < 0 || index >= vsize) return -1.0;
         return arr[index];
     }
 
+public
     void set(int index, float val) {
         if (index < 0 || index >= vsize) return;
         arr[index] = val;
     }
 
+public
     void clear() {
         vsize = 0;
     }
 
+public
     bool empty() {
         return (vsize == 0);
     }
 
+public
     void print() {
         int i;
         for (i = 0; i < vsize; i++) {
@@ -122,6 +137,7 @@ public
         vsize = 0;
     }
 
+public
     void push_back(char val) {
         if (vsize < 1000) {
             arr[vsize] = val;
@@ -129,32 +145,39 @@ public
         }
     }
 
+public
     void pop_back() {
         if (vsize > 0) vsize--;
     }
 
+public
     int size() {
         return vsize;
     }
 
+public
     char at(int index) {
         if (index < 0 || index >= vsize) return '\0';
         return arr[index];
     }
 
+public
     void set(int index, char val) {
         if (index < 0 || index >= vsize) return;
         arr[index] = val;
     }
 
+public
     void clear() {
         vsize = 0;
     }
 
+public
     bool empty() {
         return (vsize == 0);
     }
 
+public
     void print() {
         int i;
         for (i = 0; i < vsize; i++) {

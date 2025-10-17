@@ -73,6 +73,7 @@ OPT_EXPR: EXPR
 
 FUNCDECL: TYPE IDEN '(' PARAMLIST ')' ';'
  | TYPE IDEN '(' PARAMLIST ')' '{' STMNTS '}'
+ | IDEN '(' PARAMLIST ')' '{' STMNTS '}'   /* constructor without type */
 ;
 
 PARAMLIST: PARAM ',' PARAMLIST
