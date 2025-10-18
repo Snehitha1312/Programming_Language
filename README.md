@@ -485,3 +485,36 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 - Built algorithmic and data structure support modules (`Vector`, `Utility`)
 - Added syscall grammar integration for language consistency
 - Modified the TextEditor to follow our programming language and use libraries implemented by us
+
+---
+
+# Contributions – Module 7
+
+## Greeshma and Snehitha
+
+- **Migrated the entire TextEditor and library functions to our own programming language**
+  - Rewrote all previously implemented modules (`TextEditor.gs`, `Vector.gs`, `StringHandler.gs`, `FileHandler.gs`, `Arithmetic.gs`, etc.) completely in our custom language syntax.
+  - Ensured compatibility with language-specific grammar and conventions.
+  - Verified that all standard operations and structures perform correctly in the native language runtime.
+
+- **Compiler Integration and Testing**
+  - Integrated our custom libraries with the compiler developed by the compiler team.
+  - Successfully compiled the `Arithmetic.gs` library using our own compiler:
+    ```
+    make
+    ./parser Arithmetic.gs
+    ```
+  - Captured and documented the compilation output and execution results.
+  - Added **video demonstration** and **output screenshots** in the below link for reference:
+    - https://drive.google.com/drive/folders/1FxxXa5PPoTflelFMSQAV-QVH5AZhONKP?usp=drive_link 
+
+- **Pending Integration for Remaining Components**
+  - The compiler currently lacks system call implementation, preventing full compilation of the text editor and other system-dependent libraries.
+  - These modules will be integrated and tested in the next module once syscall support is implemented.
+
+- **Summary of work**
+  - Ported all editor and library code to the custom programming language.
+  - Integrated and tested with our language compiler (`Arithmetic.gs` successful run).
+  - Prepared video and documentation proof of compilation.
+  - Planned next steps for full system integration after syscall features are added.
+
