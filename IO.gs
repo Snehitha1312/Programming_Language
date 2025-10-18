@@ -1,21 +1,20 @@
 class IOHandler {
-public
     //READ CHARACTER 
-    char readChar() {
+    public char readChar() {
         char c[1];
         sys_read(0, c, 1);   // fd = 0 for stdin
         return c[0];
     }
 
     //WRITE CHARACTER
-    void writeChar(char c) {
+    public void writeChar(char c) {
         char arr[1];
         arr[0] = c;
         sys_write(1, arr, 1);  // fd = 1 for stdout
     }
 
     //READ STRING
-    void readString(char arr[], int size) {
+    public void readString(char arr[], int size) {
         int i = 0;
         char c;
         while (i < size - 1) {
@@ -28,7 +27,7 @@ public
     }
 
     //STRING → INT
-    int stringToInt(char arr[]) {
+    public int stringToInt(char arr[]) {
         int i = 0, num = 0, sign = 1;
         if (arr[0] == '-') {
             sign = -1;
@@ -44,7 +43,7 @@ public
     }
 
     //INT → STRING
-    void intToString(int x, char arr[]) {
+    public void intToString(int x, char arr[]) {
         int i = 0;
         int isNeg = 0;
         if (x == 0) {
@@ -73,7 +72,7 @@ public
     }
 
     // DOUBLE → STRING
-    void doubleToString(double val, char arr[]) {
+    public void doubleToString(double val, char arr[]) {
         int intPart = (int)val;
         double fracPart = val - intPart;
         if (fracPart < 0) fracPart = -fracPart;
@@ -101,14 +100,14 @@ public
     }
 
     //READ INT
-    int readInt() {
+    public int readInt() {
         char buf[50];
         readString(buf, 50);
         return stringToInt(buf);
     }
 
     //PRINT STRING
-    void printString(char arr[]) {
+    public void printString(char arr[]) {
         int i = 0;
         while (arr[i] != '\0') {
             writeChar(arr[i]);
@@ -117,14 +116,14 @@ public
     }
 
     //PRINT INT
-    void printInt(int x) {
+    public void printInt(int x) {
         char buf[50];
         intToString(x, buf);
         printString(buf);
     }
 
     //PRINT DOUBLE
-    void printDouble(double x) {
+    public void printDouble(double x) {
         char buf[100];
         doubleToString(x, buf);
         printString(buf);

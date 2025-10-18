@@ -5,17 +5,16 @@
 //define O_TRUNC   512 // truncate file if it exists
 //define O_APPEND  1024 // append mode
 class FileHandler {
-private
-    int fd;         // file descriptor
-    bool isOpen;    // flag to check if file is open
 
-public
+    private int fd;         // file descriptor
+    private bool isOpen;    // flag to check if file is open
+
     FileHandler() {
         fd = -1;
         isOpen = false;
     }
 
-    int fopen(char filename[], int mode) {
+    public int fopen(char filename[], int mode) {
         int flags = 0;
 
         if (mode == 0)       flags = 0;                    // read
@@ -32,7 +31,7 @@ public
         return 0; // success
     }
 
-    void fclose() {
+    public void fclose() {
         if (isOpen) {
             sys_close(fd);
             fd = -1;
@@ -40,21 +39,21 @@ public
         }
     }
 
-    int fread(char buffer[], int size) {
+    public int fread(char buffer[], int size) {
         if (!isOpen) return -1;
         int bytesRead = sys_read(fd, buffer, size);
         return bytesRead;
     }
 
 
-    int fwrite(char buffer[], int size) {
+    public int fwrite(char buffer[], int size) {
         if (!isOpen) return -1;
         int bytesWritten = sys_write(fd, buffer, size);
         return bytesWritten;
     }
 
 
-    bool is_open() {
+    public bool is_open() {
         return isOpen;
     }
 };

@@ -19,7 +19,6 @@ Utility util;
 
 // Editor structure
 class Editor {
-public
     char rows[1024][1024]; // text rows
     int rowCount = 0;
     char filename[256];
@@ -33,21 +32,21 @@ public
 Editor E;
 
 // Terminal control
-void disableRawMode() {
+public void disableRawMode() {
     th.disableRawMode();
 }
 
-void enableRawMode() {
+public void enableRawMode() {
     th.enableRawMode();
 }
 
 // Key input
-int readKey() {
+public int readKey() {
     return io.readChar();
 }
 
 // Open file
-void openFile(char fname[]) {
+public void openFile(char fname[]) {
     if (sh.length(fname) == 0) {
         E.rowCount = 1;
         E.rows[0][0] = '\0';
@@ -92,7 +91,7 @@ void openFile(char fname[]) {
 }
 
 // Save file
-void saveFile() {
+public void saveFile() {
     if (sh.length(E.filename) == 0) return;
 
     if (fh.fopen(E.filename, 1) != 0) { // 1 = write
@@ -121,7 +120,7 @@ void saveFile() {
 }
 
 // Draw screen
-void drawRows() {
+public void drawRows() {
     io.printString("\x1b[2J"); 
     io.printString("\x1b[H");  
 
@@ -150,7 +149,7 @@ void drawRows() {
 }
 
 // Cursor movement
-void moveCursor(char key) {
+public void moveCursor(char key) {
     if (key == 'h') {
         if (E.cx > 0) E.cx--;
     } 
@@ -172,19 +171,19 @@ void moveCursor(char key) {
 }
 
 // Insert/delete character
-void insertChar(char c) {
+public void insertChar(char c) {
     sh.insert(E.rows[E.cy], E.cx, c);
     E.cx++;
 }
 
-void deleteChar() {
+public void deleteChar() {
     if (E.cx < sh.length(E.rows[E.cy])) {
         sh.erase(E.rows[E.cy], E.cx, 1);
     }
 }
 
 // Command processing
-void processCommand() {
+public void processCommand() {
     if (sh.length(E.command_buffer) == 0) return;
 
     if (sh.compare(E.command_buffer, "q") == 0) exit(0);
@@ -200,7 +199,7 @@ void processCommand() {
 }
 
 // Keypress handling
-void processKeypress() {
+public void processKeypress() {
     char c = io.readChar();
 
     if (E.command_mode) {
