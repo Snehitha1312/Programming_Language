@@ -75,7 +75,7 @@ class IOHandler {
 
     // DOUBLE → STRING
     public void doubleToString(double val, char arr[]) {
-        int intPart = val;
+        double intPart = val;
         double fracPart = val - intPart;
         if (fracPart < 0) fracPart = -fracPart;
 
