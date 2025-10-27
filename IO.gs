@@ -75,31 +75,56 @@ class IOHandler {
 
     // DOUBLE → STRING
     public void doubleToString(double val, char arr[]) {
-        double intPart = val;
-        double fracPart = val - intPart;
-        if (fracPart < 0) fracPart = -fracPart;
-
-        char intBuf[50];
-        intToString(intPart, intBuf);
-
-        int i = 0, j = 0;
-        while (intBuf[j] != '\0') {
-            arr[i] = intBuf[j];
-            i++;
-            j++;
-        }
-
-        arr[i++] = '.';
-
-        for (int k = 0; k < 6; k++) {
-            fracPart = fracPart * 10;
-            int digit = fracPart;
-            arr[i++] = '0' + digit;
-            fracPart = fracPart - digit;
-        }
-
-        arr[i] = '\0';
+    int neg = 0;
+    if (val < 0) {
+        neg = 1;
+        val = -val;
     }
+
+    // Extract integer part manually
+    int intPart = 0;
+    double temp = val;
+    while (temp >= 1.0) {
+        temp = temp - 1.0;
+        intPart = intPart + 1;
+    }
+
+    // Extract fractional part
+    double frac = val - intPart;
+
+    char intBuf[50];
+    intToString(intPart, intBuf);
+
+    int i = 0, j = 0;
+
+    if (neg == 1) {
+        arr[i++] = '-';
+    }
+
+    // Copy integer part
+    while (intBuf[j] != '\0') {
+        arr[i++] = intBuf[j++];
+    }
+
+    arr[i++] = '.';
+
+    // Handle fractional part up to 6 decimal digits
+    for (int k = 0; k < 6; k++) {
+        frac = frac * 10.0;
+
+        // Extract one digit manually (again no casting)
+        int digit = 0;
+        while (frac >= 1.0) {
+            frac = frac - 1.0;
+            digit = digit + 1;
+        }
+
+        arr[i++] = '0' + digit;
+    }
+
+    arr[i] = '\0';
+}
+
 
     //READ INT
     public int readInt() {

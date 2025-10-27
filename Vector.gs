@@ -1,14 +1,108 @@
+// Helper IO functions (like from IOHandler)
+void writeChar(char c) {
+    char buf[1];
+    buf[0] = c;
+    sys_write(1, buf, 1);;   // stdout
+}
 
+void writeString(char arr[]) {
+    int i = 0;
+    while (arr[i] != '\0') {
+        writeChar(arr[i]);
+        i++;
+    }
+}
+
+void intToString(int x, char arr[]) {
+    int i = 0, neg = 0;
+    if (x == 0) {
+        arr[i++] = '0';
+        arr[i] = '\0';
+        return;
+    }
+    if (x < 0) {
+        neg = 1;
+        x = -x;
+    }
+    while (x > 0) {
+        arr[i++] = (x % 10) + '0';
+        x /= 10;
+    }
+    if (neg==1) arr[i++] = '-';
+    arr[i] = '\0';
+    // reverse
+    for (int j = 0; j < i / 2; j++) {
+        char tmp = arr[j];
+        arr[j] = arr[i - j - 1];
+        arr[i - j - 1] = tmp;
+    }
+}
+
+void doubleToString(double val, char arr[]) {
+    int neg = 0;
+    if (val < 0) {
+        neg = 1;
+        val = -val;
+    }
+
+    // Extract integer part manually
+    int intPart = 0;
+    double temp = val;
+    while (temp >= 1.0) {
+        temp = temp - 1.0;
+        intPart = intPart + 1;
+    }
+
+    // Extract fractional part
+    double frac = val - intPart;
+
+    char intBuf[50];
+    intToString(intPart, intBuf);
+
+    int i = 0, j = 0;
+
+    if (neg == 1) {
+        arr[i++] = '-';
+    }
+
+    // Copy integer part
+    while (intBuf[j] != '\0') {
+        arr[i++] = intBuf[j++];
+    }
+
+    arr[i++] = '.';
+
+    // Handle fractional part up to 6 decimal digits
+    for (int k = 0; k < 6; k++) {
+        frac = frac * 10.0;
+
+        // Extract one digit manually (again no casting)
+        int digit = 0;
+        while (frac >= 1.0) {
+            frac = frac - 1.0;
+            digit = digit + 1;
+        }
+
+        arr[i++] = '0' + digit;
+    }
+
+    arr[i] = '\0';
+}
+
+
+// ==========================================================
 // Vector for int
+// ==========================================================
 class VectorInt {
 private
     int arr[1000];
-    int vsize;
+    private  int vsize;
 
 public
     VectorInt() {
         vsize = 0;
-    }
+    };
+
 public
     void push_back(int val) {
         if (vsize < 1000) {
@@ -53,26 +147,27 @@ public
     void print() {
         int i;
         for (i = 0; i < vsize; i++) {
-            sys_print_int(arr[i]);
-            sys_print_char(' ');
+            char buf[50];
+            intToString(arr[i], buf);
+            writeString(buf);
+            writeChar(' ');
         }
-        sys_print_char('\n');
+        writeChar('\n');
     }
 };
 
-
-// ===============================
+// ==========================================================
 // Vector for float
-// ===============================
+// ==========================================================
 class VectorFloat {
 private
     float arr[1000];
-    int vsize;
+    private int vsize;
 
 public
     VectorFloat() {
         vsize = 0;
-    }
+    };
 
 public
     void push_back(float val) {
@@ -118,24 +213,27 @@ public
     void print() {
         int i;
         for (i = 0; i < vsize; i++) {
-            sys_print_double(arr[i]); // using system double printer for float
-            sys_print_char(' ');
+            char buf[100];
+            doubleToString(arr[i], buf);
+            writeString(buf);
+            writeChar(' ');
         }
-        sys_print_char('\n');
+        writeChar('\n');
     }
 };
 
+// ==========================================================
 // Vector for char
-// ===============================
+// ==========================================================
 class VectorChar {
 private
     char arr[1000];
-    int vsize;
+   private int vsize;
 
 public
     VectorChar() {
         vsize = 0;
-    }
+    };
 
 public
     void push_back(char val) {
@@ -181,9 +279,9 @@ public
     void print() {
         int i;
         for (i = 0; i < vsize; i++) {
-            sys_print_char(arr[i]);
-            sys_print_char(' ');
+            writeChar(arr[i]);
+            writeChar(' ');
         }
-        sys_print_char('\n');
+        writeChar('\n');
     }
 };
