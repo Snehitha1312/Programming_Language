@@ -261,7 +261,7 @@ public void processKeypress() {
 // Main
 int main() {
     openFile(""); // default empty file
-    while (TR) {
+    while (true) {
         drawRows();
         processKeypress();
     }
