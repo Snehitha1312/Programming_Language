@@ -2,15 +2,17 @@ class IOHandler {
     //READ CHARACTER 
     public char readChar() {
         char c[1];
-        sys_read(0, c, 1);   // fd = 0 for stdin
-        return c[0];
+        sys_read(0, c, 1);;  // fd = 0 for stdin
+        char ans;
+        ans=c[0];
+        return ans;
     }
 
     //WRITE CHARACTER
     public void writeChar(char c) {
         char arr[1];
         arr[0] = c;
-        sys_write(1, arr, 1);  // fd = 1 for stdout
+        sys_write(1, arr, 1);;  // fd = 1 for stdout
     }
 
     //READ STRING
@@ -60,7 +62,7 @@ class IOHandler {
             arr[i++] = (x % 10) + '0';
             x /= 10;
         }
-        if (isNeg) arr[i++] = '-';
+        if (isNeg==1) arr[i++] = '-';
         arr[i] = '\0';
 
         // Reverse array
@@ -73,7 +75,7 @@ class IOHandler {
 
     // DOUBLE → STRING
     public void doubleToString(double val, char arr[]) {
-        int intPart = (int)val;
+        int intPart = val;
         double fracPart = val - intPart;
         if (fracPart < 0) fracPart = -fracPart;
 
@@ -91,7 +93,7 @@ class IOHandler {
 
         for (int k = 0; k < 6; k++) {
             fracPart = fracPart * 10;
-            int digit = (int)fracPart;
+            int digit = fracPart;
             arr[i++] = '0' + digit;
             fracPart = fracPart - digit;
         }

@@ -1,7 +1,7 @@
 
 class StringHandler {
     // length
-   public int length(char str[]) {
+   public int length(char str[10000]) {
         int len = 0;
         while (str[len] != '\0') {
             len++;
@@ -10,7 +10,7 @@ class StringHandler {
     }
 
     // substr
-   public void substr(char str[], int start, int len, char res[]) {
+   public void substr(char str[10000], int start, int len, char res[10000]) {
         int n = length(str);
         if (start < 0 || start >= n) {
             res[0] = '\0'; // invalid start
@@ -25,7 +25,7 @@ class StringHandler {
 
 
     // compare
-   public int compare(char s1[], char s2[]) {
+   public int compare(char s1[10000], char s2[10000]) {
         int i = 0;
         while (s1[i] != '\0' && s2[i] != '\0') {
             if (s1[i] != s2[i]) {
@@ -36,7 +36,7 @@ class StringHandler {
         return s1[i] - s2[i];
     }
 
-    public void insert(char str[], int pos, char c) {
+    public void insert(char str[10000], int pos, char c) {
         int n = length(str);
         if (pos < 0) pos = 0;
         if (pos > n) pos = n;
@@ -48,7 +48,7 @@ class StringHandler {
     }
 
     //  erase
-   public void erase(char str[], int pos, int len) {
+   public void erase(char str[10000], int pos, int len) {
         int n = length(str);
         if (pos < 0 || pos >= n) return;
 
@@ -70,24 +70,24 @@ class StringHandler {
 
     // tolower
    public char tolower(char c) {
-        if (isupper(c)) return c + ('a' - 'A');
+        if (isupper(c)==1) return c + ('a' - 'A');
         return c;
     }
 
     // toupper
    public char toupper(char c) {
-        if (islower(c)) return c - ('a' - 'A');
+        if (islower(c)==1) return c - ('a' - 'A');
         return c;
     }
 
     //isalpha
    public bool isalpha(char c) {
-        return (islower(c) || isupper(c));
+        return (islower(c)==1 || isupper(c)==1);
     }
 
     // isalnum
    public bool isalnum(char c) {
-        return (isalpha(c) || isnum(c));
+        return (isalpha(c)==1 || isnum(c)==1);
     }
 
     // isnum (check digit)

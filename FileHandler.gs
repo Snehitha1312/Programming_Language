@@ -1,4 +1,4 @@
-//define O_RDONLY  0   // open for reading only
+//define O_RDONLY  0   // open for reading olyy
 //define O_WRONLY  1   // open for writing only
 //define O_RDWR    2   // open for reading and writing
 //define O_CREAT   64  // create file if it does not exist
@@ -7,53 +7,53 @@
 class FileHandler {
 
     private int fd;         // file descriptor
-    private bool isOpen;    // flag to check if file is open
+    private int isOpen;    // flag to check if file is open
 
-    FileHandler() {
+   public FileHandler() {
         fd = -1;
-        isOpen = false;
-    }
+        isOpen = 0;
+    };
 
-    public int fopen(char filename[], int mode) {
+    public int fopen(char filename[10000], int mode) {
         int flags = 0;
 
-        if (mode == 0)       flags = 0;                    // read
-        else if (mode == 1)  flags = 1 | 64 | 512; // write (create/truncate)
-        else if (mode == 2)  flags = 1 | 64 | 1024; // append
+        if (mode == 0){       flags = 0; }                   // read
+        else if (mode == 1){  flags = 577;} // write (create/truncate)
+        else if (mode == 2){  flags = 1089;} // append
 
-        fd = sys_open(filename, flags, 0644); // using syscall
+        fd = sys_open(filename, flags, 0644);; // using syscall
         if (fd < 0) {
-            isOpen = false;
+            isOpen = 0;
             return -1; // error
         }
 
-        isOpen = true;
+        isOpen = 1;
         return 0; // success
     }
 
     public void fclose() {
-        if (isOpen) {
-            sys_close(fd);
+        if (isOpen==1) {
+            sys_close(fd);;
             fd = -1;
-            isOpen = false;
+            isOpen = 0;
         }
     }
 
-    public int fread(char buffer[], int size) {
-        if (!isOpen) return -1;
-        int bytesRead = sys_read(fd, buffer, size);
+    public int fread(char buffer[10000], int size) {
+        if (isOpen==0){ return -1;}
+        int bytesRead = sys_read(fd, buffer, size);;
         return bytesRead;
     }
 
 
-    public int fwrite(char buffer[], int size) {
-        if (!isOpen) return -1;
-        int bytesWritten = sys_write(fd, buffer, size);
+    public int fwrite(char buffer[10000], int size) {
+        if (isOpen==0){ return -1;}
+        int bytesWritten = sys_write(fd, buffer, size);;
         return bytesWritten;
     }
 
 
-    public bool is_open() {
+    public int is_open() {
         return isOpen;
     }
 };
