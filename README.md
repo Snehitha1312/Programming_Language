@@ -415,46 +415,57 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 
 ## Greeshma and Snehitha
 
-- Wrote **5 test cases** to verify the features implemented by the Compiler team:
+- Wrote **5 test cases** to verify the features implemented by the Compiler team to verify below concepts:
   - Variable declarations and assignments
   - Control structures (`if`, `else`, `while`, `for`)
-  - Functions and recursion
-  - Class declarations with methods
-  - Object creation and member access  
-
-- Implemented and compiled the vi-like editor source code partly in C++ to mimic the intended behavior.  
-  - Screenshot of the compiled editor:  
-<img width="644" height="153" alt="image" src="https://github.com/user-attachments/assets/743b28c2-3f77-4b2a-bb54-6b46a6c5286a" />
-
-
-- Collaborated with the Compiler team to **observe and note errors/conflicts**:
-  - Detected few grammar conflicts with rules which we will try to reduce 
-
+  
 - Implemented **vi-like editor** in closest language (C++) as a reference:
   - Understood system-level terminal handling (like `termios.h`) for proper input behavior.
 
-- Developed **three standard libraries** in the custom language (`.gs` files):
+- Collaborated with the Compiler team to **observe and note errors**:
+  - Detected few grammar conflicts with rules which we will try to reduce 
+
+- Developed **the following standard libraries** in the custom language (`.gs` files):
   - **Arithmetic.gs** – provides math operations (`abs`, `sqrt`, `exp`, `power`, `max`, `min`)  
     ```cpp
     Arithmetic a;
     print(a.power(2, 10));   // Output: 1024
-    ```
-  - **IO.gs** – provides input/output operations (`print`, `readInt`, `readString`)
-  - **StringHandler.gs** – provides string operations (`length`, `concat`, `substring`, `compare`)  
- 
+
 - **Summary of work**:
   - 5 test codes validated compiler features
   - Vi-like editor implemented and compiled (C++ and partly with our compiler)
   - Compiler errors/conflicts noted and workarounds suggested
   - Libraries implemented for modular programming support
+---
+## Snehitha
+- Wrote **5 test cases** to verify the features implemented by the Compiler team to verify below concepts:
+  - Functions and recursion
+  - Class declarations with methods
+  - Object creation and member access
+  
+- Compiled the **vi-like editor** source code partly in C++ to mimic the intended behavior.  
+  - Screenshot of the compiled editor:  
+<img width="644" height="153" alt="image" src="https://github.com/user-attachments/assets/743b28c2-3f77-4b2a-bb54-6b46a6c5286a" />
 
+- Collaborated with the Compiler team to **observe and note conflicts**:
+  - Detected few grammar conflicts with rules which we will try to reduce
+ 
+- Developed **the following standard libraries** in the custom language (`.gs` files):
+  - **IO.gs** – provides input/output operations (`print`, `readInt`, `readString`)
+  - **StringHandler.gs** – provides string operations (`length`, `concat`, `substring`, `compare`) 
+
+- **Summary of work**:
+  - 5 test codes validated compiler features
+  - Vi-like editor implemented and compiled (C++ and partly with our compiler)
+  - Compiler errors/conflicts noted and workarounds suggested
+  - Libraries implemented for modular programming support
 ---
 
  # Contributions – Module 6
 
-## Greeshma and Snehitha
+## Greeshma
 
-- Developed and integrated **system-level and utility libraries** for the custom language (`.gs` files):
+- Developed and integrated **termios and filehandler libraries** for the custom language (`.gs` files):
   - **FileHandler.gs** – Handles file operations using system calls
     - Implemented: `fopen`, `fclose`, `fread`, `fwrite`, `is_open`
     - Used syscalls: `sys_open`, `sys_read`, `sys_write`, `sys_close` 
@@ -463,6 +474,23 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
     - Created `Termios` struct and `TerminalHandler` class
     - Functions: `enableRawMode`, `disableRawMode`, `tcgetattr`, `tcsetattr`
     - Simulated raw mode activation/deactivation for terminal input
+
+- Added **syscall grammar rules** in `Grammar.y` for file operations
+
+- Modified and enhanced **TextEditor.gs** to integrate libraries:
+   - Imported: `IO`, `StringHandler`, `Vector`, `FileHandler`, `Utility`, `Termios`
+   - Integrated `TerminalHandler` for toggling raw mode
+   - Ensured all modifications adhere to the custom grammar rules of our language not C++
+
+- **Summary of work**:
+- Implemented system-level file and terminal handling libraries
+- Built algorithmic and data structure support modules (`termios`, `filehandler`)
+- Added syscall grammar integration for language consistency
+- Modified the TextEditor to follow our programming language and use libraries implemented by us
+
+---
+## Snehitha
+- Developed and integrated **vector and utility libraries** for the custom language (`.gs` files):
   - **Vector.gs** – Implemented vector data structures:
     - Classes: `VectorInt`, `VectorFloat`, `VectorChar`
     - Functions: `push_back`, `pop_back`, `size`, `at`, `set`, `clear`, `empty`, `print`
@@ -471,14 +499,12 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
     - `swap()` for int, float, and char types
     - Algorithms: `insert`, `sort`, `reverse`
 
-- Added **syscall grammar rules and rules for import** in `Grammar.y` for file operations
+- Added **rules for import and some filehandling functions** in `Grammar.y` for file operations
 
 - Modified and enhanced **TextEditor.gs** to integrate libraries:
    - Imported: `IO`, `StringHandler`, `Vector`, `FileHandler`, `Utility`, `Termios`
    - Updated file operations to use the new `FileHandler` instead of standard I/O
-   - Integrated `TerminalHandler` for toggling raw mode
    - Improved internal features: cursor movement, command mode, insert mode
-   - Ensured all modifications adhere to the custom grammar rules of our language not C++
 
 - **Summary of work**:
 - Implemented system-level file and terminal handling libraries
@@ -486,35 +512,92 @@ if (a < b && c > d) { ... }  // logical AND evaluated after relational checks
 - Added syscall grammar integration for language consistency
 - Modified the TextEditor to follow our programming language and use libraries implemented by us
 
----
+ ---
+ ## Contributions – Module 7
 
-# Contributions – Module 7
+### Greeshma
 
-## Greeshma and Snehitha
+- **Code Migration**
+  - Rewrote `TextEditor.gs`, `Vector.gs`, and `StringHandler.gs` completely in our custom programming language.
+  - Ensured syntax compatibility and adherence to language-specific grammar rules.
+  - Verified correct execution of string, vector, and text-editing operations in the native runtime.
 
-- **Migrated the entire TextEditor and library functions to our own programming language**
-  - Rewrote all previously implemented modules (`TextEditor.gs`, `Vector.gs`, `StringHandler.gs`, `FileHandler.gs`, `Arithmetic.gs`, etc.) completely in our custom language syntax.
-  - Ensured compatibility with language-specific grammar and conventions.
-  - Verified that all standard operations and structures perform correctly in the native language runtime.
-
-- **Compiler Integration and Testing**
-  - Integrated our custom libraries with the compiler developed by the compiler team.
-  - Successfully compiled the `Arithmetic.gs` library using our own compiler:
+- **Compiler Integration**
+  - Integrated the migrated libraries with the custom compiler.
+  - Successfully compiled and tested the `Arithmetic.gs` module using:
     ```
     make
     ./parser Arithmetic.gs
     ```
-  - Captured and documented the compilation output and execution results.
-  - Added **video demonstration** and **output screenshots** in the below link for reference:
-    - https://drive.google.com/drive/folders/1FxxXa5PPoTflelFMSQAV-QVH5AZhONKP?usp=drive_link 
+  - Collected and documented compilation outputs and results.
 
-- **Pending Integration for Remaining Components**
-  - The compiler currently lacks system call implementation, preventing full compilation of the text editor and other system-dependent libraries.
-  - These modules will be integrated and tested in the next module once syscall support is implemented.
+- **Documentation**
+  - Prepared the documentation and uploaded the video demonstration and screenshots to the project drive:
+    - [Project Compilation Proof](https://drive.google.com/drive/folders/1FxxXa5PPoTflelFMSQAV-QVH5AZhONKP?usp=drive_link)
 
 - **Summary of work**
   - Ported all editor and library code to the custom programming language.
   - Integrated and tested with our language compiler (`Arithmetic.gs` successful run).
   - Prepared video and documentation proof of compilation.
   - Planned next steps for full system integration after syscall features are added.
+---
 
+### Snehitha
+
+- **Code Migration**
+  - Migrated `FileHandler.gs`, `Arithmetic.gs`, and other utility libraries to the custom programming language.
+  - Adapted implementations to conform to grammar specifications and runtime behavior.
+  - Verified module correctness and stability within the native execution environment.
+
+- **Compiler Testing**
+  - Collaborated on compiler integration and validation using the ported libraries.
+  - Tested the parsing and code generation stages for `Arithmetic.gs` to confirm successful compilation.
+    
+ - **Documentation**
+  - Prepared the documentation and uploaded the video demonstration and screenshots to the project drive:
+    - [Project Compilation Proof](https://drive.google.com/drive/folders/1FxxXa5PPoTflelFMSQAV-QVH5AZhONKP?usp=drive_link)
+
+- **Future Work**
+  - Noted that system call support is yet to be implemented in the compiler.
+  - Planned integration of the full text editor and system-dependent modules once syscall support is complete.
+
+
+- **Summary of work**
+  - Ported all editor and library code to the custom programming language.
+  - Integrated and tested with our language compiler (`Arithmetic.gs` successful run).
+  - Prepared video and documentation proof of compilation.
+  - Planned next steps for full system integration after syscall features are added.
+---
+## Contributions – Module 8
+
+### Greeshma
+
+- **Library Compilation**
+  - Successfully compiled `Arithmetic.gs`, `StringHandler.gs`, and `FileHandler.gs` using our custom compiler.
+  - Debugged and resolved multiple issues related to system calls and runtime dependencies during compilation.
+  - Verified the correctness and stability of compiled libraries by checking their output in the native runtime.
+
+- **Test Case Development**
+  - Designed and prepared 5 test cases for the compiler team focusing on:
+    - Function calls and nested calls
+    - Preprocessing features
+    - Array and pointer operations
+    - I/O interactions
+    - Error handling for invalid syntax or undefined functions
+---
+
+### Snehitha
+
+- **Library Compilation**
+  - Compiled and tested `Utility.gs`, `Termios.gs`, and `IO.gs` libraries with our custom compiler.
+  - Fixed errors related to system-level calls and integration with custom file-handling features.
+  - Ensured that all libraries compiled without critical runtime issues.
+
+- **Test Case Development**
+  - Created 5 compiler test cases focusing on:
+    - File handling and linking across different sources
+    - Iterative function calls
+    - Complex I/O behavior
+    - Nested function and recursion checks
+    - Deliberate erroneous cases to test compiler error detection
+  - Shared all test inputs with the compiler team for validation.
