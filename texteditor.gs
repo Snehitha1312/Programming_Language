@@ -370,7 +370,7 @@ public
  flags = 1089;
  } // append
 
- fd = sys_open(filename, flags, 0644);
+ fd = sys_open(filename, flags);
  ; // using syscall
  if (fd < 0)
  {
@@ -491,7 +491,7 @@ public
  void enableRawMode()
  {
  tcgetattr(0, Eorigtermios);
- sys_write(1, "Raw mode enabled.\n", 18);
+ //sys_write(1, "Raw mode enabled.\n", 18);
  ;
 
  Termios raw;
@@ -511,7 +511,7 @@ public
  void tcsetattr(int fd, int flag, Termios t)
  {
  // simulate applying terminal attributes
- sys_write(1, "Termios attributes set.\n", 25);
+// sys_write(1, "Termios attributes set.\n", 25);
  ;
  }
 };
@@ -578,59 +578,57 @@ int readKey()
  return io.readChar();
 }
 
-// Open file
-void openFile(char fname[], Editor E)
+void openFile(Editor &ed, char fname[])
 {
- if (sh.length(fname) == 0)
- {
- E.rowCount = 1;
- E.rows[0][0] = 'a';
- return;
- }
+    if (sh.length(fname) == 0)
+    {
+        ed.rowCount = 1;
+        ed.rows[0][0] = 'a';
+        ed.rows[0][1] = '\0';
+        return;
+    }
 
- if (fh.fopen(fname, 0) != 0)
- { // 0 = read
- E.rowCount = 1;
- E.rows[0][0] = '\0';
- return;
- }
+    if (fh.fopen(fname, 0) != 0)
+    { // 0 = read
+        ed.rowCount = 1;
+        ed.rows[0][0] = '\0';
+        return;
+    }
 
- char buffer[1024 * 1024];
- int bytesRead = fh.fread(buffer, 1024 * 1024);
+    char buffer[1024 * 1024];
+    int bytesRead = fh.fread(buffer, 1024 * 1024);
 
- int start = 0;
- E.rowCount = 0;
- for (int i = 0; i < bytesRead; i++)
- {
- if (buffer[i] == '\n')
- {
- int len = i - start;
- if (len >= 1024)
- len = 1024 - 1;
- for (int j = 0; j < len; j++)
- {
- // E.rows[E.rowCount][j] = buffer[start + j];
- }
- // E.rows[E.rowCount][len] = '\0';
- E.rowCount++;
- start = i + 1;
- }
- }
- if (start < bytesRead)
- {
- int len = bytesRead - start;
- if (len >= 1024)
- len = 1024 - 1;
- for (int j = 0; j < len; j++)
- {
- // E.rows[E.rowCount][j] = buffer[start + j];
- }
- // E.rows[E.rowCount][len] = '\0';
- E.rowCount++;
- }
+    int start = 0;
+    ed.rowCount = 0;
+    for (int i = 0; i < bytesRead; i++)
+    {
+        if (buffer[i] == '\n')
+        {
+            int len = i - start;
+            if (len >= 1024) len = 1024 - 1;
+            for (int j = 0; j < len; j++)
+            {
+                ed.rows[ed.rowCount][j] = buffer[start + j];
+            }
+            ed.rows[ed.rowCount][len] = '\0';
+            ed.rowCount++;
+            start = i + 1;
+        }
+    }
+    if (start < bytesRead)
+    {
+        int len = bytesRead - start;
+        if (len >= 1024) len = 1024 - 1;
+        for (int j = 0; j < len; j++)
+        {
+            ed.rows[ed.rowCount][j] = buffer[start + j];
+        }
+        ed.rows[ed.rowCount][len] = '\0';
+        ed.rowCount++;
+    }
 
- fh.fclose();
- sh.substr(fname, 0, sh.length(fname), E.filename);
+    fh.fclose();
+    sh.substr(fname, 0, sh.length(fname), ed.filename);
 }
 
 // Save file
@@ -767,13 +765,13 @@ void processCommand()
  return;
 
  if (sh.compare(E.command_buffer, "q") == 0)
- exit(0);
+ sys_exit(0);
  else if (sh.compare(E.command_buffer, "w") == 0)
  saveFile();
  else if (sh.compare(E.command_buffer, "wq") == 0)
  {
  saveFile();
- exit(0);
+ sys_exit(0);
  }
  else
  {
@@ -817,7 +815,7 @@ void processKeypress()
  if (c == 'i')
  E.insert_mode = 1;
  else if (c == 'q')
- exit(0);
+ sys_exit(0);
  else if (c == 's')
  saveFile();
  else if (c == 'x')
@@ -873,13 +871,14 @@ void processKeypress()
 // Main
 int main()
 {
- //enableRawMode();
- openFile(""); // default empty file
+    io.printString("Program started!\n");
+ enableRawMode();
+ openFile(E,""); // default empty file
  while (true)
  {
  drawRows();
  processKeypress();
  }
- //disableRawMode();
+ disableRawMode();
  return 0;
 }
