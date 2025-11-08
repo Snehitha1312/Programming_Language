@@ -279,7 +279,7 @@ class FileHandler {
         else if (mode == 1){  flags = 577;} // write (create/truncate)
         else if (mode == 2){  flags = 1089;} // append
 
-        fd = sys_open(filename, flags, 0644);; // using syscall
+        fd = sys_open(filename, flags);; // using syscall
         if (fd < 0) {
             isOpen = 0;
             return -1; // error
@@ -647,9 +647,9 @@ public void deleteChar() {
 public void processCommand() {
     if (sh.length(E.command_buffer) == 0) return;
 
-    if (sh.compare(E.command_buffer, "q") == 0) exit(0);
+    if (sh.compare(E.command_buffer, "q") == 0) sys_exit(0);
     else if (sh.compare(E.command_buffer, "w") == 0) saveFile();
-    else if (sh.compare(E.command_buffer, "wq") == 0) { saveFile(); exit(0); }
+    else if (sh.compare(E.command_buffer, "wq") == 0) { saveFile(); sys_exit(0); }
     else {
         sh.substr("Not an editor command: ", 0, 23, E.status_msg);
         // append command
@@ -679,7 +679,7 @@ public void processKeypress() {
 
     if (E.insert_mode==0) {
         if (c == 'i') E.insert_mode = 1;
-        else if (c == 'q') exit(0);
+        else if (c == 'q') sys_exit(0);
         else if (c == 's') saveFile();
         else if (c == 'x') deleteChar();
         else if (c == 'o') {
@@ -724,7 +724,7 @@ int main() {
     
 
 
-    openFile(""); // default empty file
+    openFile("",E); // default empty file
     while (true) {
         drawRows();
         processKeypress();
