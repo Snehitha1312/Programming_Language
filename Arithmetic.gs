@@ -118,7 +118,7 @@ public int abs(int x) {
     }
 
     while (exp > 0) {
-        if ((exp & 1) == 1) {    // odd exponent
+        if ((exp /2) == 1) {    // odd exponent
             result *= base;
         }
         base *= base;
@@ -142,7 +142,7 @@ public float power(float base, int exponent) {
     }
 
     while (exp > 0) {
-        if ((exp & 1) == 1) {     // if odd
+        if ((exp / 2) == 1) {     // if odd
             result *= base;
         }
         base *= base;
@@ -206,4 +206,5 @@ public float power(float base, int exponent) {
     return b;
     }
 };
+
 
