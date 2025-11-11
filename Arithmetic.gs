@@ -122,7 +122,7 @@ public int abs(int x) {
             result *= base;
         }
         base *= base;
-        exp >>= 1;               // exp = exp / 2
+        exp =exp/2;               // exp = exp / 2
     }
 
     if (exponent < 0) {
@@ -146,7 +146,7 @@ public float power(float base, int exponent) {
             result *= base;
         }
         base *= base;
-        exp >>= 1;               // exp = exp / 2
+        exp=exp/2;               // exp = exp / 2
     }
 
     // if original exponent was negative
