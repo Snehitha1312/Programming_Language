@@ -425,36 +425,6 @@ public
  }
 };
 
-class Utility
-{
-public
- // Swap for int
- void swap(int a, int b)
- {
- int temp = a;
- a = b;
- b = temp;
- }
-
- // Swap for float
-public
- void swap(float a, float b)
- {
- float temp = a;
- a = b;
- b = temp;
- }
-
- // Swap for char
-public
- void swap2(char a, char b)
- {
- char temp = a;
- a = b;
- b = temp;
- }
-};
-
 // termios.gs — terminal control library (struct + raw mode)
 
 class Termios
@@ -501,7 +471,7 @@ public
  }
 
 public
- void tcgetattr(int fd, Termios &t)
+ void tcgetattr(int fd, Termios t)
  {
  // simulate system terminal state read
  t.clflag = 1;
@@ -559,7 +529,6 @@ TerminalHandler th = new TerminalHandler();
 IOHandler io = new IOHandler();
 StringHandler sh = new StringHandler();
 FileHandler fh = new FileHandler();
-Utility util = new Utility();
 
 // Terminal control
 void disableRawMode(TerminalHandler th)
@@ -647,13 +616,13 @@ void saveFile()
 
  for (int i = 0; i < E.rowCount; i++)
  {
- char line = E.rows[i];
+ char line[1024] = E.rows[i];
  int len = sh.length(line);
  fh.fwrite(line, len);
  if (i + 1 < E.rowCount)
  {
- char nl = '\n';
- fh.fwrite(&nl, 1);
+ char nl[2] = "\n";
+ fh.fwrite(nl, 1);
  }
  }
 
@@ -873,13 +842,11 @@ void processKeypress()
 // Main
 int main()
 {
- //enableRawMode();
  openFile(""); // default empty file
  while (true)
  {
  drawRows();
  processKeypress();
  }
- //disableRawMode();
  return 0;
 }
