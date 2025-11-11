@@ -736,13 +736,13 @@ void processCommand()
  return;
 
  if (sh.compare(E.command_buffer, "q") == 0)
- exit(0);
+ sys_exit(0);
  else if (sh.compare(E.command_buffer, "w") == 0)
  saveFile();
  else if (sh.compare(E.command_buffer, "wq") == 0)
  {
  saveFile();
- exit(0);
+ sys_exit(0);
  }
  else
  {
@@ -786,7 +786,7 @@ void processKeypress()
  if (c == 'i')
  E.insert_mode = 1;
  else if (c == 'q')
- exit(0);
+ sys_exit(0);
  else if (c == 's')
  saveFile();
  else if (c == 'x')
@@ -842,7 +842,7 @@ void processKeypress()
 // Main
 int main()
 {
- openFile(""); // default empty file
+ openFile("",E); // default empty file
  while (true)
  {
  drawRows();
