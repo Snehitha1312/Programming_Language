@@ -616,7 +616,8 @@ void saveFile()
 
  for (int i = 0; i < E.rowCount; i++)
  {
- char line[1024] = E.rows[i];
+ char line[1024];
+ line = E.rows[i];
  int len = sh.length(line);
  fh.fwrite(line, len);
  if (i + 1 < E.rowCount)
